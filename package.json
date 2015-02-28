@@ -1,0 +1,16 @@
+{
+  "name": "odinshag-javascript",
+  "version": "1.0.0",
+  "description": "This is repository of JavaScript source code and plugins for odinshag.ru web project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexandr Skoblov",
+  "license": "ISC",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-uglify": "^0.8.0"
+  }
+}
