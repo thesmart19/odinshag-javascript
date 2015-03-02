@@ -1,64 +1,65 @@
+
 # Список скриптов, которые используются в проекте.
 
 ## 1. Библиотеки и сторонние плагины
 
 ### 1.1 jQuery core
-** версия - 1.9.1 ** - <обновление>
+версия - 1.9.1 - <обновление>
 http://jquery.com/download/
 
 ### 1.2 jQuery UI
-** версия - 1.10.4 ** - <обновление>
+версия - 1.10.4 - <обновление>
 http://jqueryui.com/download/
 
 ### 1.3 jQuery UI date picker RU
 русская локализация календаря
 
 ### 1.4 jQuery Cookie
-** версия - 1.3.1 ** - <обновление>
+версия - 1.3.1 - <обновление>
 http://plugins.jquery.com/cookie/
 
 ### 1.5 jQuery Custom Scrollbar
-** версия - **
+версия -
 http://plugins.jquery.com/custom-scrollbar/
 
 ### 1.6 jQuery Masked Input
-** версия - 1.3.1 **
+версия - 1.3.1
 http://plugins.jquery.com/maskedinput/
 
 ### 1.7 jQuery ScrollTo
-** версия - 1.4.11 ** - <обновление>
+версия - 1.4.11 - <обновление>
 http://plugins.jquery.com/scrollTo/
 
 ### 1.8 jQuery File Upload
-** версия - 5.19.8 ** - <обновление>
+версия - 5.19.8 - <обновление>
 https://github.com/blueimp/jQuery-File-Upload
 
 ### 1.9 jQuery JSON plugin
-** версия - 2.4.0 ** - <обновление>
+версия - 2.4.0 - <обновление>
 https://github.com/Krinkle/jquery-json
 
 ### 1.10 Zoom
-** версия - 1.7.13 **
+версия - 1.7.13
 http://www.jacklmoore.com/zoom
 
 ### 1.11 ZeroClipboard
-** версия - 2.1.6 ** - <обновление>
+версия - 2.1.6 - <обновление>
 http://zeroclipboard.org
     
 ### 1.12 Easy Slider
 !!!неизвестно используется или нет!!!
-** версия - 1.7 **
+версия - 1.7
 http://cssglobe.com/easy-slider-15-the-easiest-jquery-plugin-for-sliding/
 
 ### 1.13 Sudo Slider
 !!!неизвестно используется или нет!!!
-** версия - 3.1.5 **
+версия - 3.1.5
 http://webbies.dk/SudoSlider/
 
 ### 1.14 ui-slider.js
 !!!необходимо удалить!!!
 jQuery UI
-** версия - 1.8.13 **
+версия - 1.8.13
     
 ## 2. Пользовательские скрипты
 
@@ -68,7 +69,7 @@ jQuery UI
 ### 2.2 отдельные файлы инициализации
 каждый файл соответствует отдельному типу страниц
 инициализирует необходимые сторонние плагины или функции из общей библиотеки
-** пример **
+пример
 /bitrix/templates/cosmo/js/script.js
 
 ## 3. Порядок сборки скриптов

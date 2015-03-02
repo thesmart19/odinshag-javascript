@@ -3,10 +3,11 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         concat: {
-            basic_and_extras: {
+            javascripts: {
                 files: {
+                    /* jQuery core + plugins + User scripts */
                     'build/bitrix/js/cosmo/production.js': [
-                        'source/bitrix/js/cosmo/1-01-jquery-1.9.1.min.js',
+                        'source/bitrix/js/cosmo/1-01-jquery.js',
                         'source/bitrix/js/cosmo/1-02-jquery-ui-1.10.4.custom.min.js',
                         'source/bitrix/js/cosmo/1-03-jquery-ui.datepicker-ru.js',
                         'source/bitrix/js/cosmo/1-04-jquery.cookie.js',
@@ -18,25 +19,68 @@ module.exports = function (grunt) {
                         'source/bitrix/js/cosmo/1-10-jquery.zoom.min.js',
                         'source/bitrix/js/cosmo/1-11-zero-clipboard.min.js',
                         'source/bitrix/js/cosmo/2-01-script.js'
-                    ]
+                    ],
+                    /* main template script */
+                    'build/bitrix/templates/cosmo/js/script.js': ['source/bitrix/templates/cosmo/js/script.js'],
+                    /* Условия доставки */
+                    'build/services/delivery/js/script.js': ['source/services/delivery/js/script.js'],
+                    /* Вакансии */
+                    'build/company/vacancy/js/cv-form.js': ['source/company/vacancy/js/cv-form.js'],
+                    'build/company/vacancy/js/script.js': ['source/company/vacancy/js/script.js'],
+                    /* Возврат товара */
+                    'build/services/moneyback/js/script.js': ['source/services/moneyback/js/script.js'],
+                    /* Шаблон страницы товара */
+                    'build/bitrix/templates/.default/components/os/catalog.element_3.0/cosmo/script.js': ['source/bitrix/templates/.default/components/os/catalog.element_3.0/cosmo/script.js'],
+                    /* Форма отзывов */
+                    'build/bitrix/templates/.default/components/os/review_form/cosmo/script.js': ['source/bitrix/templates/.default/components/os/review_form/cosmo/script.js']
                 }
             }
         },
         uglify: {
             options: {
-                mangle: false, /* prevent changes to your variable and function names */
-                sourceMap: true /* source map file will be generated in the same directory */
+                /* prevent changes to your variable and function names */
+                mangle: false,
+                /* source map file will be generated in the same directory */
+                sourceMap: true
             },
-            my_target: {
+            javascripts: {
                 files: {
-                    'build/bitrix/js/cosmo/production.min.js': ['build/bitrix/js/cosmo/production.js']
+                    /* jQuery core + plugins + User scripts */
+                    'build/bitrix/js/cosmo/production.min.js': ['build/bitrix/js/cosmo/production.js'],
+                    /* main template script */
+                    'build/bitrix/templates/cosmo/js/script.min.js': ['build/bitrix/templates/cosmo/js/script.js'],
+                    /* Условия доставки */
+                    'build/services/delivery/js/script.js': ['build/services/delivery/js/script.js'],
+                    /* Вакансии */
+                    'build/company/vacancy/js/cv-form.js': ['build/company/vacancy/js/cv-form.js'],
+                    'build/company/vacancy/js/script.js': ['build/company/vacancy/js/script.js'],
+                    /* Возврат товара */
+                    'build/services/moneyback/js/script.js': ['build/services/moneyback/js/script.js'],
+                    /* Шаблон страницы товара */
+                    'build/bitrix/templates/.default/components/os/catalog.element_3.0/cosmo/script.js': ['build/bitrix/templates/.default/components/os/catalog.element_3.0/cosmo/script.js'],
+                    /* Форма отзывов */
+                    'build/bitrix/templates/.default/components/os/review_form/cosmo/script.js': ['build/bitrix/templates/.default/components/os/review_form/cosmo/script.js']
                 }
+            }
+        },
+        copy: {
+            main: {
+                files: [
+                    /* update jQuery core */
+                    {
+                        src: 'source/jquery/jquery-1.11.2.js',
+                        dest: 'source/bitrix/js/cosmo/1-01-jquery.js'
+                    }
+                ]
             }
         }
     });
     /* Load the plugin that provides the "uglify" task */
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    /* Default task(s) */
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    /* Task(s) */
     grunt.registerTask('default', ['concat', 'uglify']);
+    /* copy - update jquery and plugins */
+    grunt.registerTask('update', ['copy']);
 };

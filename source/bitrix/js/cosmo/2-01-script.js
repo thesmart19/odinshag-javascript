@@ -1,3 +1,5 @@
+/* проверяем версию jQuery */
+/* console.log("jQuery " + jQuery.fn.jquery); */
 /* параметры сайта */
 var systemParameters = {
     mobileDevice: {
@@ -1282,7 +1284,8 @@ $(document).ready(function () {
                     }
                     /* на странице пунктов выдачи плагин Zoom не подключается */
                     /* в этом случае инициализация не нужна */
-                    if (jQuery.isFunction(li.find("a.zoom").zoom)) {
+                    if (document.location.href.indexOf("pickpoints") == -1)
+                    {
                         /* инициализация плагина увеличения картинок */
                         /* только если плагин подключен */
                         var sourceImg = li.find("img:not(.zoomImg)");

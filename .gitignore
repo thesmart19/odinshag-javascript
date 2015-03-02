@@ -1,2 +1,6 @@
+# Папки #
 build/*
 node_modules/*
+
+# Файлы #
+odinshag-javascript.zip
