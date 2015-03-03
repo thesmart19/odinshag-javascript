@@ -280,6 +280,7 @@ function SaveProductToCookies(id, value, residue, price, todelete, source) {
     }
     /* общий таймер и задержка для всех пунктов фиксированной шапки */
 var hideBasketTimer, hideBasketTimerValue = 5000;
+
 function put2cart(object, id, source) {
         var object = $(object);
         var productId = id;
@@ -720,6 +721,7 @@ function AddToFavorites(obj, subdivisionID, productID) {
         */
     }
 }
+
 function DeleteFromFavorites(obj, subdivisionID, productID) {
     /* удаление товара */
     if (typeof subdivisionID !== "undefined" && typeof productID !== "undefined") {
@@ -749,6 +751,7 @@ function DeleteFromFavorites(obj, subdivisionID, productID) {
     }
     return;
 }
+
 function ClearFavorites(message) {
         DeleteFromCookies(message, "favorites");
     }
@@ -757,6 +760,7 @@ function AddToViewed(subdivisionID, productID) {
     /* просмотренные товары не имеют лимита */
     var response = AddToCookies("viewed", subdivisionID, productID, productAddToLimit);
 }
+
 function DeleteFromViewed(obj, subdivisionID, productID) {
     /* удаление товара */
     if (typeof subdivisionID !== "undefined" && typeof productID !== "undefined") {
@@ -789,6 +793,7 @@ function DeleteFromViewed(obj, subdivisionID, productID) {
     }
     return;
 }
+
 function ClearViewed(message) {
         DeleteFromCookies(message, "viewed");
     }
@@ -861,6 +866,7 @@ function AddToCompared(obj, subdivisionID, productID) {
     }
     return;
 }
+
 function DeleteFromCompared(obj, subdivisionID, productID) {
     /* удаление товара */
     if (typeof subdivisionID !== "undefined" && typeof productID !== "undefined") {
@@ -902,6 +908,7 @@ function DeleteFromCompared(obj, subdivisionID, productID) {
     }
     return;
 }
+
 function ClearCompared(message) {
         DeleteFromCookies(message, "compared");
     }
@@ -1159,14 +1166,17 @@ function GetInfoMessageHtml(text) {
     /* информационное сообщение синего цвета */
     return GetMessageHtml(text, "blue");
 }
+
 function GetErrorMessageHtml(text) {
     /* сообщение об ошибке красного цвета */
     return GetMessageHtml(text, "red");
 }
+
 function GetCommonMessageHtml(text) {
     /* информационное сообщение без рамок и без иконки черного цвета */
     return GetMessageHtml(text, "black no-border no-icon");
 }
+
 function GetCommonErrorMessageHtml(text) {
         /* сообщение об ошибке без рамок и без иконки красного цвета */
         return GetMessageHtml(text, "red no-border no-icon");
@@ -1284,8 +1294,7 @@ $(document).ready(function () {
                     }
                     /* на странице пунктов выдачи плагин Zoom не подключается */
                     /* в этом случае инициализация не нужна */
-                    if (document.location.href.indexOf("pickpoints") == -1)
-                    {
+                    if (document.location.href.indexOf("pickpoints") == -1) {
                         /* инициализация плагина увеличения картинок */
                         /* только если плагин подключен */
                         var sourceImg = li.find("img:not(.zoomImg)");
@@ -2749,6 +2758,7 @@ $(document).ready(function () {
             itemCity.on("mouseleave", ".tooltip ul li a", function () {
                 $(this).removeClass("hover");
             });
+
             function SubmitCity(cityID) {
                 if (typeof cityID !== "undefined") {
                     cityID = cityID.split("=");
@@ -3421,6 +3431,7 @@ $(document).ready(function () {
                 obj.removeClass("error");
                 return true;
             }
+
             function CheckPassword(obj) {
                 if (obj.val() == "") {
                     obj.addClass("error");
@@ -3429,6 +3440,7 @@ $(document).ready(function () {
                 obj.removeClass("error");
                 return true;
             }
+
             function CheckEmail(obj) /* проверка на наличие символов @ и . */ {
                 var value = obj.val();
                 var indexOfDog = value.indexOf("@");
@@ -3444,6 +3456,7 @@ $(document).ready(function () {
                 obj.removeClass("error");
                 return true;
             }
+
             function CheckRating() {
                     if (reqRatingInput.length > 0) {
                         var ratingValue = parseInt(reqRatingInput.val());
@@ -3563,6 +3576,7 @@ $(document).ready(function () {
                     object.hide();
                 }, 500);
             });
+
             function makePreSearch(object, searchSuggestions) {
                 var query = object.val();
                 if (query.length > 2 && typeof searchSuggestions !== "undefined") {
@@ -3593,6 +3607,7 @@ $(document).ready(function () {
                     }
                 }
             }
+
             function MoveToResult(input, direction) {
                 if (input.val().length > 2) {
                     if (searchSuggestions.html().length > 1 && searchSuggestions.html().indexOf("search_empty_result") == -1) {
@@ -3616,6 +3631,7 @@ $(document).ready(function () {
                     }
                 }
             }
+
             function FormSubmit(form, url) {
                 if (typeof url !== "undefined") {
                     window.location.href = url;
@@ -3795,6 +3811,7 @@ $(document).ready(function () {
                 $(".header.fixed .user a.title").click();
                 event.preventDefault();
             });
+
             function SendVote(obj, vote) {
                 var rating = 0;
                 if (parameterUserId != 0 && parameterVoted == 0) {
@@ -3899,6 +3916,7 @@ $(document).ready(function () {
                     ShowPromptBox();
                 });
             } else ShowPromptBox();
+
             function ShowPromptBox() {
                 object.on("click", function (event) {
                     window.prompt("Вы можете скопировать ссылку на страницу, используя сочетание клавиш Ctrl+C", /*document.location.href*/ refLink);
@@ -4086,35 +4104,38 @@ $(document).ready(function () {
             /* ************************************************************* */
             /* виды пользовательских событий */
             object.customEvents = {
-                0: "onChangeInvoicePrice",
                 /* изменение цены товаров */
-                1: "onChangeDeliveryPrice",
+                0: "onChangeInvoicePrice",
                 /* изменение стоимости доставки */
-                2: "onChangePaymentType",
+                1: "onChangeDeliveryPrice",
                 /* изменение способа оплаты */
-                3: "onChangeBonusCount",
+                2: "onChangePaymentType",
                 /* изменение бонусов */
-                4: "onChangeTotalPrice",
+                3: "onChangeBonusCount",
                 /* изменение итоговой стоимости */
-                5: "onGetDeliveryType",
+                4: "onChangeTotalPrice",
                 /* получить тип доставки */
-                6: "onGetPaymentType",
+                5: "onGetDeliveryType",
                 /* получить тип оплаты */
-                7: "onGetInvoicePrice",
+                6: "onGetPaymentType",
                 /* получить стоимость товаров */
-                8: "onGetBonusCount",
+                7: "onGetInvoicePrice",
                 /* получить количество бонусов */
-                9: "onGetBonusCountCanPay",
+                8: "onGetBonusCount",
                 /* получить количество бонусов, кот разрешено тратить */
-                10: "onGetOrderFormErrors",
+                9: "onGetBonusCountCanPay",
                 /* получить данные об ошибках */
-                11: "onSaveOrderForm",
+                10: "onGetOrderFormErrors",
                 /* сохранить данные формы заказа */
+                11: "onSaveOrderForm",
+                /* отправить данные для партнерки */
                 12: "onSendPartnerData",
                 /* получить тип плательщика */
                 13: "onGetPersonType",
-                /* отправить данные для партнерки */
-                500: "onError" /* ошибка */
+                /* получить тип безналичной оплаты */
+                14: "onGetPaymentCashlessType",
+                /* ошибка */
+                500: "onError"
             };
             /* ************************************************************* */
             /* / Object */
@@ -4125,62 +4146,70 @@ $(document).ready(function () {
             MVC.Model = function () {
                 /* параметры */
                 this.orderFormData = {
-                    invoicePrice: 0,
                     /* стоимость всех товаров в корзине */
-                    deliveryPrice: 0,
+                    invoicePrice: 0,
                     /* стоимость доставки */
-                    deliveryType: 0,
+                    deliveryPrice: 0,
                     /* тип доставки */
-                    deliveryID: 0,
+                    deliveryType: 0,
                     /* адрес доставки */
-                    deliveryDate: 0,
+                    deliveryID: 0,
                     /* дата доставки */
-                    deliveryDateStr: 0,
+                    deliveryDate: 0,
                     /* дата доставки в формате 00.00.0000 */
-                    deliveryDateStrUser: 0,
+                    deliveryDateStr: 0,
                     /* дата доставки в формате 00.00.0000 которую выбрал пользователь */
-                    deliveryCityIsFree: 0,
+                    deliveryDateStrUser: 0,
                     /* возможность бесплатной доставки в данном городе */
-                    deliveryRules: 0,
+                    deliveryCityIsFree: 0,
                     /* правила доставки для данного города */
+                    deliveryRules: 0,
                     /* дата самовывоза = дате доставки */
-                    pickupDate: 0,
                     /* дата самовыза */
-                    pickupDateStr: 0,
+                    pickupDate: 0,
                     /* дата самовывоза в формате 00.00.0000 */
-                    pickupDateStrUser: 0,
+                    pickupDateStr: 0,
                     /* дата самовывоза в формате 00.00.0000 которую выбрал пользователь */
-                    bonusCount: 0,
+                    pickupDateStrUser: 0,
                     /* общее количество бонусов */
-                    bonusCountCanPay: 0,
+                    bonusCount: 0,
                     /* сколько бонусов можно потратить */
-                    bonusCountToPay: 0,
+                    bonusCountCanPay: 0,
                     /* количество бонусов для оплаты заказа */
-                    paymentType: 0,
+                    bonusCountToPay: 0,
                     /* способ оплаты */
-                    paymentElectroMoney: 0,
+                    paymentType: 0,
                     /* способ оплаты электронными деньгами */
-                    personType: 0,
+                    paymentElectroMoney: 0,
+                    /* тип безналичной оплаты */
+                    paymentCashlessType: 0,
                     /* тип плательщика */
-                    personLocationID: 0,
+                    personType: 0,
                     /* город пользователя плательщика */
-                    personFID: 0,
+                    personLocationID: 0,
                     /* ID плательщика */
-                    cartTotal: 0,
+                    personFID: 0,
                     /* общая стоимость заказа */
-                    cartTotalNoDiscounts: 0 /* общая стоимость заказа без скидок */
+                    cartTotal: 0,
+                    /* общая стоимость заказа без скидок */
+                    cartTotalNoDiscounts: 0
                 };
                 /* типы ошибок */
                 this.orderFormErrors = {
-                    requiredDataMissing: false,
                     /* не заполнено одно из обязательных полей */
+                    requiredDataMissing: false,
                     requiredDataType: [],
                     requiredEmailMissing: false,
-                    deliveryIDMissing: false,
                     /* не выбран способ доставки или адрес самовывоза */
-                    onlinePaymentNotAvailable: false,
+                    deliveryIDMissing: false,
                     /* онлайн оплата не возможна */
-                    personFIDMissing: false /* не выбран тип плательщика */
+                    onlinePaymentNotAvailable: false,
+                    /* оплата картой при получении не возможна */
+                    offlineCardPaymentNotAvailable: false,
+                    /* не выбран тип плательщика */
+                    personFIDMissing: false,
+                    /* не выбран тип безналичной оплаты */
+                    paymentCashlessTypeMissing: false
                 };
             };
             /* ************************************************************* */
@@ -4202,6 +4231,7 @@ $(document).ready(function () {
                 this.showPaymentCashless;
                 this.showOnlinePaymentError;
                 this.showPaymentCashlessError;
+                this.showPaymentCashlessTypeError;
                 this.showCover;
                 this.onChangeCheckBox;
                 this.sendRitorno;
@@ -4255,29 +4285,36 @@ $(document).ready(function () {
                     }
                     this.objectForm.find("#DELIVERY_TYPE").tabsSwitch(deliveryType);
                     this.showDeliveryMessage();
+                    var tabID = 0;
                     var paymentType = {};
                     /* onGetPaymentType */
                     this.objectForm.trigger(this.objectForm.customEvents[6], [paymentType]);
                     switch (paymentType.data) {
                     case "cash":
-                        paymentType = 0;
+                        tabID = 0;
                         break;
-                    case "cashless":
-                        paymentType = 1;
-                        break;
+                    case "cardoffline":
                     case "electromoney":
-                        paymentType = 2;
+                    case "cashless":
+                        tabID = 1;
                         break;
                     default:
-                        paymentType = 0;
+                        tabID = 0;
                         break;
                     }
-                    this.objectForm.find("#PAYMENT_TYPE").tabsSwitch(paymentType);
-                    if(paymentType == 1) {
-                        var personType = {};
-                        /* onGetPersonType */
-                        this.objectForm.trigger(this.objectForm.customEvents[13], [personType]);
-                        var data = { personType : personType.data };
+                    this.objectForm.find("#PAYMENT_TYPE").tabsSwitch(tabID);
+                    if (tabID == 1) {
+                        var data = { paymentType : paymentType.data };
+                        /* onGetPaymentCashlessType */
+                        var paymentCashlessType = {};
+                        this.objectForm.trigger(this.objectForm.customEvents[13], [paymentCashlessType]);
+                        data.paymentCashlessType = paymentCashlessType.data;
+                        if(paymentType.data == "cashless") {
+                            var personType = {};
+                            /* onGetPersonType */
+                            this.objectForm.trigger(this.objectForm.customEvents[13], [personType]);
+                            data.personType = personType.data;
+                        }
                         this.showPaymentCashless(data);
                     }
                     this.showPickupMessage();
@@ -4556,7 +4593,7 @@ $(document).ready(function () {
                                 if (typeof uri === "object") {
                                     for (var f in uri) {
                                         var temp = uri[f].split("=");
-                                        if(typeof temp[0] !== "undefined" && typeof temp[1] !== "undefined" && temp[0] == "city") {
+                                        if (typeof temp[0] !== "undefined" && typeof temp[1] !== "undefined" && temp[0] == "city") {
                                             cityID = parseInt(temp[1]);
                                         }
                                     }
@@ -4719,15 +4756,25 @@ $(document).ready(function () {
                                 }
                             });
                             $(this).trigger(object.customEvents[1]);
-                            /* проверка возможности онлайн оплаты */
+                            /* Оплата картой при получении - проверка возможности */
+                            /* проверка только для городов: Москва, Санкт-Петербург */
+                            
+                            if(target.find("option:selected").data("has-terminal") == 0) {
+                                var data = {
+                                    offlineCardPaymentNotAvailable: true
+                                };
+                                /* onError */
+                                object.trigger(object.customEvents[500], [data]);
+                            }
+                            /* Оплата картой онлайн - проверка возможности онлайн оплаты */
                             if (target.find("option:selected").data("can-pay-online") == 0) {
                                 var data = {
                                     onlinePaymentNotAvailable: true
                                 };
                                 /* onError */
                                 object.trigger(object.customEvents[500], [data]);
-                            } else
-                                HideOnlinePaymentError();
+                            }
+                            
                         } else {
                             var data = {
                                 deliveryIDMissing: true
@@ -4746,6 +4793,59 @@ $(document).ready(function () {
                         $(this).trigger(object.customEvents[2], [data]);
                         break;
                         /* /способ оплаты - банковский перевод - тип плательщика */
+                        /* #тип безналичной оплаты */
+                    case "cashless-type":
+                        var data = {
+                            paymentCashlessType: parseInt(target.find("option:selected").val())
+                        };
+                        /* в зависимости от типа безналичной оплаты меняется способ оплаты */
+                        switch (data.paymentCashlessType) {
+                        case 1:
+                            /* Оплата картой при получении */
+                            data.paymentType = "cardoffline";
+                            break;
+                        case 2:
+                            /* Оплата картой онлайн */
+                            data.paymentType = "electromoney";
+                            break;
+                        case 3:
+                            /* Банковский перевод */
+                            data.paymentType = "cashless";
+                            break;
+                        }
+                        /* onChangePaymentType */
+                        $(this).trigger(object.customEvents[2], [data]);
+                        if(data.paymentCashlessType == 1 || data.paymentCashlessType == 2) {
+                            var deliveryType = {};
+                            /* onGetDeliveryType */
+                            $(this).trigger(object.customEvents[5], [deliveryType]);
+                            if (deliveryType.data == "pickup") {
+                                if(data.paymentCashlessType == 1) {
+                                    /* Оплата картой при получении - проверка возможности */
+                                    /* проверка только для городов: Москва, Санкт-Петербург */
+                                    
+                                    if($("#delivery-pickup").find("option:selected").data("has-terminal") == 0) {
+                                        var data = {
+                                            offlineCardPaymentNotAvailable: true
+                                        };
+                                        /* onError */
+                                        object.trigger(object.customEvents[500], [data]);
+                                    }
+                                }
+                                if(data.paymentCashlessType == 2) {
+                                    /* Оплата картой онлайн - проверка возможности онлайн оплаты */
+                                    if ($("#delivery-pickup").find("option:selected").data("can-pay-online") == 0) {
+                                        var data = {
+                                            onlinePaymentNotAvailable: true
+                                        };
+                                        /* onError */
+                                        object.trigger(object.customEvents[500], [data]);
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                        /* /тип безналичной оплаты */
                     }
                 });
                 /* /change */
@@ -5272,6 +5372,24 @@ $(document).ready(function () {
                                 object.trigger(object.customEvents[500], [data]);
                             }
                             break;
+                        case "paymentCashlessTypeMissing":
+                            /* проверка типа безналичной оплаты */
+                            if (model.orderFormData.paymentType != "cash") {
+                                if ($(this).find("#cashless-type option:selected").val() == 0) {
+                                    var data = {
+                                        paymentCashlessTypeMissing: true
+                                    };
+                                    /* onError */
+                                    object.trigger(object.customEvents[500], [data]);
+                                } else {
+                                    var data = {
+                                        paymentCashlessTypeMissing: false
+                                    };
+                                    /* onError - ошибка исправлена */
+                                    object.trigger(object.customEvents[500], [data]);
+                                }
+                            }
+                            break;
                         case "personFIDMissing":
                             /* проверка типа плательщика */
                             if (model.orderFormData.paymentType == "cashless") {
@@ -5314,12 +5432,15 @@ $(document).ready(function () {
                         }
                     }
                     if (errors.onlinePaymentNotAvailable && typeof $(this).find("#electromoney").offset() !== "undefined") {
-                        if(model.orderFormData.paymentType == "electromoney ") {
+                        if (model.orderFormData.paymentType == "electromoney ") {
                             top = parseInt($(this).find("#electromoney").offset().top - 40);
                         }
                     }
+                    if (errors.paymentCashlessTypeMissing && typeof $(this).find("#cashless-type").offset() !== "undefined") {
+                        top = parseInt($(this).find("#cashless-type").offset().top - 40);
+                    }
                     if (errors.personFIDMissing && typeof $(this).find("#payment-cashless").offset() !== "undefined") {
-                        if(model.orderFormData.paymentType == "cashless") {
+                        if (model.orderFormData.paymentType == "cashless") {
                             top = parseInt($(this).find("#payment-cashless").offset().top - 40);
                         }
                     }
@@ -5432,7 +5553,7 @@ $(document).ready(function () {
                     var check = select.children(".check");
                     var textMessage = "";
                     if (model.orderFormData.deliveryDate != 0) {
-                        if(model.orderFormData.deliveryDate == "завтра") {
+                        if (model.orderFormData.deliveryDate == "завтра") {
                             textMessage += " Срок доставки: <span>" + model.orderFormData.deliveryDate + "</span>. ";
                         } else {
                             textMessage += " Доставка: <span>" + model.orderFormData.deliveryDate + "</span>. ";
@@ -5483,22 +5604,22 @@ $(document).ready(function () {
                         error.hide();
                     }
                     /* проверяем количество способов доставки */
-                    if(select.find("option").length == 1) {
+                    if (select.find("option").length == 1) {
                         /* выводим название способа доставки */
                         var deliveryName = select.find(".select select option:selected").text();
-                        if(deliveryName != "") {
+                        if (deliveryName != "") {
                             message.prepend("<b>" + deliveryName + "</b><br>");
                             /* если существует всего 1 способ доставки - скрываем select */
                             select.children(".select").hide();
                             check.hide();
                             /* календарь */
-                            if(calendar.css("display") == "block") {
+                            if (calendar.css("display") == "block") {
                                 calendar.addClass("margin-top");
                             }
                         }
                     } else {
                         select.children(".select").show();
-                        if(calendar.hasClass("margin-top")) {
+                        if (calendar.hasClass("margin-top")) {
                             calendar.removeClass("margin-top");
                         }
                     }
@@ -5561,26 +5682,26 @@ $(document).ready(function () {
                         error.hide();
                     }
                     /* проверяем количество способов доставки */
-                    if(select.find("option").length == 1) {
+                    if (select.find("option").length == 1) {
                         /* выводим название пункта выдачи */
                         var pickpointName = select.find(".select select option:selected").text();
-                        if(pickpointName != "") {
+                        if (pickpointName != "") {
                             message.prepend("Пункт выдачи <b>" + pickpointName + "</b><br>");
                             /* если существует всего 1 пункт самовывоза - скрываем select */
                             select.children(".select").hide();
                             check.hide();
                             /* календарь */
-                            if(calendar.css("display") == "block") {
+                            if (calendar.css("display") == "block") {
                                 calendar.addClass("margin-top");
                             }
                         }
                         /* показываем информацию о пункте выдачи */
-                        if(pickupDetails.length == 1 && typeof pickupDetails[0] !== "undefined") {
+                        if (pickupDetails.length == 1 && typeof pickupDetails[0] !== "undefined") {
                             $(pickupDetails[0]).show();
                         }
                     } else {
                         select.children(".select").show();
-                        if(calendar.hasClass("margin-top")) {
+                        if (calendar.hasClass("margin-top")) {
                             calendar.removeClass("margin-top");
                         }
                     }
@@ -5594,17 +5715,27 @@ $(document).ready(function () {
                     /* onGetOrderFormErrors */
                     this.objectForm.trigger(this.objectForm.customEvents[10], [errors]);
                     errors = errors.data;
-                    if (errors.onlinePaymentNotAvailable === true) {
+                    if(errors.onlinePaymentNotAvailable === true || errors.offlineCardPaymentNotAvailable === true) {
                         this.objectForm.find("#DELIVERY_TYPE .page.two .select select option:selected").removeAttr("selected");
                         this.objectForm.find("#DELIVERY_TYPE .page.two ul.pickup-details li").removeClass("active");
-                        this.objectForm.find("#DELIVERY_TYPE .page.two .select .error").text("Оплата картой в онлайне и последующая выдача заказа в этом пункте НЕВОЗМОЖНА. Выберите другой способ оплаты.");
+                        if (errors.onlinePaymentNotAvailable === true) {
+                            this.objectForm.find("#DELIVERY_TYPE .page.two .select .error").text("Оплата картой в онлайне и последующая выдача заказа в этом пункте НЕВОЗМОЖНА. Выберите другой способ оплаты.");
+                        } else {
+                            if(errors.offlineCardPaymentNotAvailable === true) {
+                                this.objectForm.find("#DELIVERY_TYPE .page.two .select .error").text("Оплата картой при получении в этом пункте НЕВОЗМОЖНА. Выберите другой способ оплаты.");
+                            }
+                        }
+                        this.objectForm.find("#cashless-type option:selected").removeAttr("selected");
+                        this.objectForm.find(".card-offline").hide();
+                        this.objectForm.find(".card-online").hide();
+                        this.objectForm.find(".bank-transfer").hide();
+                        var data = {
+                            paymentCashlessTypeMissing: true
+                        };
+                        /* onError */
+                        object.trigger(object.customEvents[500], [data]);
                     }
                     this.objectForm.find("#DELIVERY_TYPE .page.two .select .error").show();
-                };
-                /* онлайн оплата не возможна */
-                this.showOnlinePaymentError = function (error) {
-                    var electroMoneyTab = this.objectForm.find("#PAYMENT_TYPE .titles .electromoney");
-                    if (typeof error !== "undefined" && error === true) electroMoneyTab.hide();
                 };
                 /* перекрытие формы белым слоем */
                 this.showCover = function () {
@@ -5612,15 +5743,74 @@ $(document).ready(function () {
                 };
                 /* показать поля для банковского перевода */
                 this.showPaymentCashless = function (data) {
-                    var check = this.objectForm.find("#PAYMENT_TYPE .page.two .select .check");
-                    var error = this.objectForm.find("#PAYMENT_TYPE .page.two .select .error");
+                    var selectCashlessType = this.objectForm.find("#PAYMENT_TYPE .page.two .select.cashless-type");
+                    var checkCashlessType = selectCashlessType.find(".check");
+                    var errorCashlessType = selectCashlessType.find(".error");
+
+                    var selectPersonType = this.objectForm.find("#PAYMENT_TYPE .page.two .bank-transfer .select.person");
+                    var checkPersonType = selectPersonType.find(".check");
+                    var errorPersonType = selectPersonType.find(".error");
+
+                    var cardOffline = this.objectForm.find("#PAYMENT_TYPE .page.two .card-offline");
+                    var cardOnline = this.objectForm.find("#PAYMENT_TYPE .page.two .card-online");
+                    var cardBankTransfer = this.objectForm.find("#PAYMENT_TYPE .page.two .bank-transfer");
+
                     this.objectForm.find(".legal-entity").hide();
+
                     if (typeof data !== "undefined") {
+                        if (typeof data.paymentCashlessType !== "undefined") {
+                            /* тип безналичной оплаты */
+                            switch (data.paymentCashlessType) {
+                            case 0:
+                                /* не выбран */
+                                cardOffline.hide();
+                                cardOnline.hide();
+                                cardBankTransfer.hide();
+                                checkCashlessType.hide();
+                                var data = {
+                                    paymentCashlessTypeMissing: true
+                                };
+                                /* onError */
+                                object.trigger(object.customEvents[500], [data]);
+                                break;
+                            case 1:
+                                /* Оплата картой при получении */
+                                cardOffline.show();
+                                cardOnline.hide();
+                                cardBankTransfer.hide();
+                                checkCashlessType.show();
+                                errorCashlessType.hide();
+                                break;
+                            case 2:
+                                /* Оплата картой онлайн */
+                                cardOnline.show();
+                                cardOffline.hide();
+                                cardBankTransfer.hide();
+                                checkCashlessType.show();
+                                errorCashlessType.hide();
+                                break;
+                            case 3:
+                                /* Банковский перевод */
+                                cardOffline.hide();
+                                cardOnline.hide();
+                                cardBankTransfer.show();
+                                checkCashlessType.show();
+                                errorCashlessType.hide();
+                                /* сбрасываем тип плательщика */
+                                var data = {
+                                    personType: 0
+                                };
+                                /* onChangePaymentType */
+                                $(this).trigger(object.customEvents[2], [data]);
+                                break;
+                            }
+                        }
                         if (typeof data.personType !== "undefined") {
                             switch (data.personType) {
                             case 0:
                                 /* Не выбран */
                                 this.objectForm.find(".legal-entity").hide();
+                                selectPersonType.find(".select select option").removeAttr("selected");
                                 var data = {
                                     personFIDMissing: true
                                 };
@@ -5631,8 +5821,8 @@ $(document).ready(function () {
                                 /* Физическое лицо */
                                 this.objectForm.find(".legal-entity").hide();
                                 this.objectForm.find(".legal-entity.physical-person").show();
-                                check.show();
-                                error.hide();
+                                checkPersonType.show();
+                                errorPersonType.hide();
                                 break;
                             case 2:
                                 /* Юридическое лицо */
@@ -5640,15 +5830,15 @@ $(document).ready(function () {
                                 this.objectForm.find(".legal-entity.physical-person").hide();
                                 this.objectForm.find(".legal-entity.individual").hide();
                                 this.objectForm.find(".legal-entity.actual-address").hide();
-                                check.show();
-                                error.hide();
+                                checkPersonType.show();
+                                errorPersonType.hide();
                                 break;
                             case 3:
                                 /* Индивидуальный предприниматель */
                                 this.objectForm.find(".legal-entity").hide();
                                 this.objectForm.find(".legal-entity.individual").show();
-                                check.show();
-                                error.hide();
+                                checkPersonType.show();
+                                errorPersonType.hide();
                                 break;
                             }
                         }
@@ -5668,10 +5858,15 @@ $(document).ready(function () {
                         }
                     }
                 };
+                /* тип безналичной оплаты не выбран */
+                this.showPaymentCashlessTypeError = function (data) {
+                    this.objectForm.find("#PAYMENT_TYPE .page.two .select.cashless-type .check").hide();
+                    this.objectForm.find("#PAYMENT_TYPE .page.two .select.cashless-type .error").show();
+                };
                 /* тип плательщика не выбран */
                 this.showPaymentCashlessError = function (data) {
-                    this.objectForm.find("#PAYMENT_TYPE .page.two .select .check").hide();
-                    this.objectForm.find("#PAYMENT_TYPE .page.two .select .error").show();
+                    this.objectForm.find("#PAYMENT_TYPE .page.two .bank-transfer .select .check").hide();
+                    this.objectForm.find("#PAYMENT_TYPE .page.two .bank-transfer .select .error").show();
                 };
                 /* обработка партнерки */
                 this.sendRitorno = function (product) {
@@ -5705,6 +5900,7 @@ $(document).ready(function () {
                     obj.removeClass("error");
                     return true;
                 }
+
                 function CheckEmail(obj) /* проверка на наличие символов @ и . */ {
                         var value = obj.val();
                         var indexOfDog = value.indexOf("@");
@@ -5867,9 +6063,11 @@ $(document).ready(function () {
                         break;
                     }
                 };
+                /*
                 function HideOnlinePaymentError() {
                     object.find("#PAYMENT_TYPE .titles .electromoney").show();
                 }
+                */
                 function SetBackgroundSize() {
                     var background = object.find(".section .background");
                     if (background.length > 0) {
@@ -5888,6 +6086,7 @@ $(document).ready(function () {
                         }
                     }
                 }
+
                 function DateParseToObj(date) {
                     var obj = date.split(".");
                     obj = {
@@ -5967,6 +6166,9 @@ $(document).ready(function () {
                         if (typeof data.personType !== "undefined") {
                             model.orderFormData.personType = data.personType;
                         }
+                        if (typeof data.paymentCashlessType !== "undefined") {
+                            model.orderFormData.paymentCashlessType = data.paymentCashlessType;
+                        }
                         /* уведомление - View */
                         /* вычисление итоговой стоимости */
                         /* 4 : onChangeTotalPrice - изменение итоговой стоимости */
@@ -6037,6 +6239,10 @@ $(document).ready(function () {
                 view.objectForm.on(view.objectForm.customEvents[13], function (event, returnObj) {
                     returnObj.data = model.orderFormData.personType;
                 });
+                /* onGetPaymentCashlessType - получить тип безналичной оплаты */
+                view.objectForm.on(view.objectForm.customEvents[14], function (event, returnObj) {
+                    returnObj.data = model.orderFormData.paymentCashlessType;
+                });
                 /* onSaveOrderForm */
                 view.objectForm.on(view.objectForm.customEvents[11], function (event, callback) {
                     var result = SaveOrderForm();
@@ -6058,7 +6264,7 @@ $(document).ready(function () {
                 });
                 /* ********************************************************* */
                 /* onError */
-                view.objectForm.on(view.objectForm.customEvents[500], function (event, data) {
+                view.objectForm.on(view.objectForm.customEvents[500], function (event, data) { 
                     /* обработка данных - Model */
                     if (typeof data !== "undefined") {
                         if (typeof data.requiredDataMissing !== "undefined") {
@@ -6107,15 +6313,29 @@ $(document).ready(function () {
                                 if (model.orderFormData.deliveryType == "pickup") {
                                     if (model.orderFormData.paymentType == "electromoney")
                                         view.showPickupError();
-                                    else
-                                        view.showOnlinePaymentError(true);
                                 }
                             }
                         }
+                        if (typeof data.offlineCardPaymentNotAvailable !== "undefined") {
+                            model.orderFormErrors.offlineCardPaymentNotAvailable = data.offlineCardPaymentNotAvailable;
+                            if (model.orderFormErrors.offlineCardPaymentNotAvailable === true) {
+                                if (model.orderFormData.deliveryType == "pickup") {
+                                    if (model.orderFormData.paymentType == "cardoffline") {
+                                        view.showPickupError();
+                                    }
+                                }
+                            }
+                        }                     
                         if (typeof data.personFIDMissing !== "undefined") {
                             model.orderFormErrors.personFIDMissing = data.personFIDMissing;
                             if (model.orderFormErrors.personFIDMissing === true) {
                                 view.showPaymentCashlessError();
+                            }
+                        }
+                        if (typeof data.paymentCashlessTypeMissing !== "undefined") {
+                            model.orderFormErrors.paymentCashlessTypeMissing = data.paymentCashlessTypeMissing;
+                            if (model.orderFormErrors.paymentCashlessTypeMissing === true) {
+                                view.showPaymentCashlessTypeError();
                             }
                         }
                     }
@@ -6189,6 +6409,9 @@ $(document).ready(function () {
                                 if (isNaN(model.orderFormData.deliveryPrice)) model.orderFormData.deliveryPrice = 0;
                                 model.orderFormData.deliveryID = parseInt(view.objectForm.find("#delivery-pickup option:selected").val());
                             }
+                        }
+                        if(model.orderFormData.paymentType == "cardoffline" || model.orderFormData.paymentType == "electromoney" || model.orderFormData.paymentType == "cashless") {
+                            model.orderFormData.paymentCashlessType = parseInt(view.objectForm.find("#cashless-type option:selected").val());
                         }
                     }
                     /* сохраняем данные формы перед отправкой */
@@ -6278,8 +6501,7 @@ $(document).ready(function () {
                             }
                         }
                         /* способ оплаты мог измениться */
-                        if (model.orderFormData.paymentType == "cashless") {
-                            /* Банковский перевод */
+                        if (model.orderFormData.paymentType == "cardoffline" || model.orderFormData.paymentType == "electromoney" || model.orderFormData.paymentType == "cashless") {
                             if (typeof data !== "undefined") {
                                 view.showPaymentCashless(data);
                             } else {
@@ -6287,7 +6509,9 @@ $(document).ready(function () {
                             }
                         }
                     }
+                    console.log(model.orderFormData);
                 }
+
                 function DateParse(newDate) {
                     var newDateStr = "";
                     newDate = newDate.split(".");
