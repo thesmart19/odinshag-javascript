@@ -4196,7 +4196,9 @@ $(document).ready(function () {
                     /* общая стоимость заказа */
                     cartTotal: 0,
                     /* общая стоимость заказа без скидок */
-                    cartTotalNoDiscounts: 0
+                    cartTotalNoDiscounts: 0,
+                    /* оформить заказ без подтверждения оператором */
+                    orderWithoutConfirmation: 0
                 };
                 /* типы ошибок */
                 this.orderFormErrors = {
@@ -4306,8 +4308,14 @@ $(document).ready(function () {
                         tabID = 0;
                         break;
                     }
-                    this.objectForm.find("#PAYMENT_TYPE").tabsSwitch(tabID);
-                    if (tabID == 1) {
+                    
+                    if(this.objectForm.find("#PAYMENT_TYPE .pages .page").length == 1) {
+                        this.objectForm.find("#PAYMENT_TYPE").tabsSwitch(0);
+                    } else {
+                        this.objectForm.find("#PAYMENT_TYPE").tabsSwitch(tabID);
+                    }
+                    
+                    if (tabID == 1 || (this.objectForm.find("#PAYMENT_TYPE .pages .page").length == 1 && paymentType.data == "cashless")) {
                         var data = { paymentType : paymentType.data };
                         /* onGetPaymentCashlessType */
                         var paymentCashlessType = {};
@@ -5037,7 +5045,7 @@ $(document).ready(function () {
                     var errors = {};
                     /* onGetOrderFormErrors */
                     $(this).trigger(object.customEvents[10], [errors]);
-                    errors = errors.data;
+                    errors = errors.data;                    
                     /* проверяем все возможные типы ошибок */
                     for (var errType in errors) {
                         switch (errType) {
@@ -5428,9 +5436,22 @@ $(document).ready(function () {
                         }
                     } /* #for(var errType in errors) */
                     var top = 0;
-                    if (errors.requiredDataMissing || errors.requiredEmailMissing) {
-                        if (typeof $(this).find(".required.error").offset() !== "undefined") {
-                            top = parseInt($(this).find(".required.error").offset().top - 40);
+                    if (errors.personFIDMissing && typeof $(this).find("#payment-cashless").offset() !== "undefined") {
+                        if (model.orderFormData.paymentType == "cashless") {
+                            top = parseInt($(this).find("#payment-cashless").offset().top - 40);
+                        }
+                    }
+                    if (errors.paymentCashlessTypeMissing && typeof $(this).find("#cashless-type").offset() !== "undefined") {
+                        top = parseInt($(this).find("#cashless-type").offset().top - 40);
+                    }
+                    if (errors.onlinePaymentNotAvailable) {
+                        if (model.orderFormData.paymentType == "electromoney") {
+                            if (typeof $(this).find("#cashless-type").offset() !== "undefined") {
+                                top = parseInt($(this).find("#cashless-type").offset().top - 40);
+                            }
+                        }
+                        if (model.orderFormData.deliveryType == "pickup" && typeof $(this).find("#delivery-pickup").offset() !== "undefined") {
+                            top = parseInt($(this).find("#delivery-pickup").offset().top - 40);
                         }
                     }
                     if (errors.deliveryIDMissing) {
@@ -5442,21 +5463,21 @@ $(document).ready(function () {
                             }
                         }
                     }
-                    if (errors.onlinePaymentNotAvailable && typeof $(this).find("#electromoney").offset() !== "undefined") {
-                        if (model.orderFormData.paymentType == "electromoney ") {
-                            top = parseInt($(this).find("#electromoney").offset().top - 40);
-                        }
-                    }
-                    if (errors.paymentCashlessTypeMissing && typeof $(this).find("#cashless-type").offset() !== "undefined") {
-                        top = parseInt($(this).find("#cashless-type").offset().top - 40);
-                    }
-                    if (errors.personFIDMissing && typeof $(this).find("#payment-cashless").offset() !== "undefined") {
-                        if (model.orderFormData.paymentType == "cashless") {
-                            top = parseInt($(this).find("#payment-cashless").offset().top - 40);
+                    if (errors.requiredDataMissing || errors.requiredEmailMissing) {
+                        if (typeof $(this).find(".required.error").offset() !== "undefined") {
+                            top = parseInt($(this).find(".required.error").offset().top - 40);
                         }
                     }
                     /* скролл документа к сообщению об ошибке */
                     if (typeof top !== "undefined" && top > 0) {
+                        /*
+                        console.log("top - " + top);
+                        for(var errType in errors) {
+                            if (errors[errType] === true) {
+                                console.log(errType);
+                            }
+                        }
+                        */
                         $("html, body").animate({
                             scrollTop: top
                         }, 500);
@@ -5470,6 +5491,10 @@ $(document).ready(function () {
                             /* возвращаем значение-  true */
                             success.data = result;
                         });
+                        /*
+                        console.log("OKEY");
+                        return false;
+                        */
                         /* если обработчик события не успеет вернуть данные - форма не будет отправлена */
                         return success.data;
                     }
@@ -5531,6 +5556,27 @@ $(document).ready(function () {
                     }
                     /* обновляем общую стоимость заказа */
                     this.objectForm.find(".section.total .content .total span").text(model.orderFormData.cartTotal + " р.");
+                    /* проверяем можно ли оформить заказ без подтверждения оператором колл-центра */
+                    var confirmation = this.objectForm.find(".section.total .confirmation");
+                    if(model.orderFormData.orderWithoutConfirmation === true) {
+                        /* включаем чекбокс */
+                        if(model.orderFormData.deliveryType == "pickup") {
+                            /* если чекбокс был скрыт */
+                            if(confirmation.css("display") == "none") {
+                                confirmation.find("input[type='checkbox']").prop( "checked", true );
+                                confirmation.find("span.icon").addClass( "active" );
+                                confirmation.show();
+                            }
+                        } else {
+                            confirmation.find("input[type='checkbox']").prop( "checked", false );
+                            confirmation.find("span.icon").removeClass( "active" );
+                            confirmation.hide();
+                        }
+                    } else {
+                        confirmation.find("input[type='checkbox']").prop( "checked", false );
+                        confirmation.find("span.icon").removeClass( "active" );
+                        confirmation.hide();
+                    }
                 };
                 /* уведомление о стоимости доставки в списке товаров */
                 this.showDeliveryNotice = function (price, needToPay) {
@@ -6400,6 +6446,9 @@ $(document).ready(function () {
                         if (isNaN(model.orderFormData.bonusCountCanPay)) model.orderFormData.bonusCountCanPay = 0;
                         model.orderFormData.bonusCountToPay = parseInt(view.objectForm.find("input[name='BONUS_TO_PAY']").val());
                         if (isNaN(model.orderFormData.bonusCountToPay)) model.orderFormData.bonusCountToPay = 0;
+                        if (typeof view.objectForm.find("input[name='WITHOUT_CONIFRMATION']").val() !== "undefined" && view.objectForm.find("input[name='WITHOUT_CONIFRMATION']").val() == 1) {
+                            model.orderFormData.orderWithoutConfirmation = true;
+                        }
                         /* проверка количества бонусов */
                         if (model.orderFormData.bonusCountToPay > model.orderFormData.bonusCountCanPay) {
                             model.orderFormData.bonusCountToPay = model.orderFormData.bonusCountCanPay;

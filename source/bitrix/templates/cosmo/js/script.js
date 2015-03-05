@@ -1,5 +1,5 @@
 /* определение системных параметров */
-if(typeof jQuery !== "undefined" && jQuery.isFunction($(window).width))
+if(typeof jQuery !== "undefined" && jQuery.isFunction($(window).width) && typeof systemParameters === "object")
 {
     var globalViewportWidth = $(window).width();
     if(globalViewportWidth > 0 && globalViewportWidth < 570)
