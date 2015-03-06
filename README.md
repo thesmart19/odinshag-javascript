@@ -43,6 +43,7 @@ https://github.com/Krinkle/jquery-json
 http://www.jacklmoore.com/zoom
 
 ### 1.11 ZeroClipboard
+!!!СКРИПТ ВРЕМЕННО ИСКЛЮЧЕН ИЗ ПРОЕКТА!!!
 версия - 2.1.6 - <обновление>
 http://zeroclipboard.org
     

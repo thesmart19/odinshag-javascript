@@ -17,7 +17,7 @@ module.exports = function (grunt) {
                         'source/bitrix/js/cosmo/1-08-jquery.fileupload.js',
                         'source/bitrix/js/cosmo/1-09-jquery.json-2.4.min.js',
                         'source/bitrix/js/cosmo/1-10-jquery.zoom.min.js',
-                        'source/bitrix/js/cosmo/1-11-zero-clipboard.min.js',
+                        /*'source/bitrix/js/cosmo/1-11-zero-clipboard.min.js', --- скрипт временно исключен из проекта */
                         'source/bitrix/js/cosmo/2-01-script.js'
                     ],
                     /* main template script */
