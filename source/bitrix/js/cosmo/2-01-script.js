@@ -5462,6 +5462,7 @@ $(document).ready(function () {
                                 }
                             }
                             qbaka.report('Order Form Errors: ' + errorList);
+                            qbaka.log('Order Form Error Log');
                         }
 
                         $("html, body").animate({
