@@ -3621,8 +3621,6 @@ $(document).ready(function () {
                             $(links[currentPosition]).removeClass("hover");
                         if (direction == 1) currentPosition--;
                         else if (direction == -1) currentPosition++;
-                        if (currentPosition < 0)
-                            currentPosition = 0;
                         else if (currentPosition > searchSuggestions.find(".suggestion-block .suggestion-content ul li a").length)
                             currentPosition = searchSuggestions.find(".suggestion-block .suggestion-content ul li a").length;
                         links.each(function (index) {
@@ -3632,6 +3630,9 @@ $(document).ready(function () {
                                 if (direction == 0) FormSubmit(object, $(this).attr("href"));
                             }
                         });
+                        if (currentPosition < 0) {
+                            currentPosition = 0;
+                        }
                     }
                 }
             }
@@ -5547,7 +5548,7 @@ $(document).ready(function () {
                     var confirmation = this.objectForm.find(".section.total .confirmation");
                     if(model.orderFormData.orderWithoutConfirmation === true) {
                         /* включаем чекбокс */
-                        if(model.orderFormData.deliveryType == "pickup") {
+                        if(model.orderFormData.deliveryType == "pickup" && (model.orderFormData.paymentType == "cash" || model.orderFormData.paymentType == "cardoffline")) {
                             /* если чекбокс был скрыт */
                             if(confirmation.css("display") == "none") {
                                 confirmation.find("input[type='checkbox']").prop( "checked", true );
@@ -6719,6 +6720,11 @@ function FilterSubmit(form, element, elementTop, inputTop) {
             var input = $(this);
             serialize += encodeURIComponent(input.attr("name")) + "=" + encodeURIComponent(input.val()) + "&";
         });
+        /* удаляем из строки последние символы & и = */
+        var lastChar = serialize.substring(serialize.length-1, serialize.length);
+        if(lastChar == "&" || lastChar == "=") {
+            serialize = serialize.substring(0, serialize.length-1);
+        }
         /* добавляем загрузчик */
         var top = "50%"; /* диапазоны */
         if (systemParameters.mobileDevice.isCellPhone) {
