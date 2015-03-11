@@ -234,7 +234,7 @@ function SaveProductToCookies(id, value, residue, price, todelete, source) {
             /*index = itemId.indexOf(id);*/
             index = -1;
             for (var i in itemId) {
-                if (itemId[i][0] == id) index = i;
+                if (typeof itemId[i] !== "undefined" && itemId[i][0] == id) index = i;
             }
             /* количество вновь добавленного товара увеличиваем на количество товара, который уже был добавлен */
             if (index != -1) /* товар уже добавлен */ {

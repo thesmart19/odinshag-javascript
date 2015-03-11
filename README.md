@@ -35,29 +35,34 @@ http://plugins.jquery.com/scrollTo/
 https://github.com/blueimp/jQuery-File-Upload
 
 ### 1.9 jQuery JSON plugin
-версия - 2.4.0 - <обновление>
+!!!неизвестно используется или нет!!!
+версия - 2.5.1
 https://github.com/Krinkle/jquery-json
 
-### 1.10 Zoom
+### 1.10 JSON-js
+версия - 2015-02-25
+https://github.com/douglascrockford/JSON-js
+
+### 1.11 Zoom
 версия - 1.7.13
 http://www.jacklmoore.com/zoom
 
-### 1.11 ZeroClipboard
+### 1.12 ZeroClipboard
 !!!СКРИПТ ВРЕМЕННО ИСКЛЮЧЕН ИЗ ПРОЕКТА!!!
 версия - 2.1.6 - <обновление>
 http://zeroclipboard.org
     
-### 1.12 Easy Slider
+### 1.13 Easy Slider
 !!!неизвестно используется или нет!!!
 версия - 1.7
 http://cssglobe.com/easy-slider-15-the-easiest-jquery-plugin-for-sliding/
 
-### 1.13 Sudo Slider
+### 1.14 Sudo Slider
 !!!неизвестно используется или нет!!!
 версия - 3.1.5
 http://webbies.dk/SudoSlider/
 
-### 1.14 ui-slider.js
+### 1.15 ui-slider.js
 !!!необходимо удалить!!!
 jQuery UI
 версия - 1.8.13

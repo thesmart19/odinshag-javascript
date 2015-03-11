@@ -15,9 +15,10 @@ module.exports = function (grunt) {
                         'source/bitrix/js/cosmo/1-06-jquery.maskedinput.js',
                         'source/bitrix/js/cosmo/1-07-jquery.scrollTo.js',
                         'source/bitrix/js/cosmo/1-08-jquery.fileupload.js',
-                        'source/bitrix/js/cosmo/1-09-jquery.json-2.4.min.js',
-                        'source/bitrix/js/cosmo/1-10-jquery.zoom.min.js',
-                        /*'source/bitrix/js/cosmo/1-11-zero-clipboard.min.js', --- скрипт временно исключен из проекта */
+                        'source/bitrix/js/cosmo/1-09-jquery.json.min.js',
+                        'source/bitrix/js/cosmo/1-10-json.js',
+                        'source/bitrix/js/cosmo/1-11-jquery.zoom.min.js',
+                        /*'source/bitrix/js/cosmo/1-12-zero-clipboard.min.js', --- скрипт временно исключен из проекта */
                         'source/bitrix/js/cosmo/2-01-script.js'
                     ],
                     /* main template script */
@@ -70,6 +71,16 @@ module.exports = function (grunt) {
                     {
                         src: 'source/jquery/jquery-1.11.2.js',
                         dest: 'source/bitrix/js/cosmo/1-01-jquery.js'
+                    },
+                    /* update jQuery JSON plugin */
+                    {
+                        src: 'source/plugins/jquery-json/dist/jquery.json.min.js',
+                        dest: 'source/bitrix/js/cosmo/1-09-jquery.json.min.js'
+                    },
+                    /* update JSON-js plugin */
+                    {
+                        src: 'source/plugins/json-js/json2.js',
+                        dest: 'source/bitrix/js/cosmo/1-10-json.js'
                     }
                 ]
             }
