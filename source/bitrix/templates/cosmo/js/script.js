@@ -137,17 +137,19 @@ $(document).ready( function()
 			parent.find(".message.product-preview").remove();
 			/* показываем товары */
 			parent.find(".message").show();
-			parent.find(".message ul.items").customScrollbar( { preventDefaultScroll : true } );
-			parent.find(".message ul.items").on("customScroll", function(event, scrollData)
-			{
-				if(scrollData.scrollPercent == 0 || scrollData.scrollPercent >= 100)
-				{
-					$(this).mousewheel(function(event)
-					{
-						event.preventDefault();
-					});
-				}
-			});
+            if (jQuery.isFunction( parent.find(".message ul.items").customScrollbar )) {
+                parent.find(".message ul.items").customScrollbar( { preventDefaultScroll : true } );
+                parent.find(".message ul.items").on("customScroll", function(event, scrollData)
+                {
+                    if(scrollData.scrollPercent == 0 || scrollData.scrollPercent >= 100)
+                    {
+                        $(this).mousewheel(function(event)
+                        {
+                            event.preventDefault();
+                        });
+                    }
+                });
+            }
 		}
 		/* отображаем форму авторизации пользователя */
 		/*if(parent.hasClass("user"))
