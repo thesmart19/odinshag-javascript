@@ -4780,10 +4780,14 @@ $(document).ready(function () {
                             var data = {};
                             if (target.find("option:selected").data("has-terminal") == 0) {
                                 data.offlineCardPaymentNotAvailable = true;
+                            } else {
+                                data.offlineCardPaymentNotAvailable = false;
                             }
                             /* Оплата картой онлайн - проверка возможности онлайн оплаты */
                             if (target.find("option:selected").data("can-pay-online") == 0) {
                                 data.onlinePaymentNotAvailable = true;
+                            } else {
+                                data.onlinePaymentNotAvailable = false;
                             }
                             if (data.offlineCardPaymentNotAvailable === true || data.onlinePaymentNotAvailable === true) {
                                 /* onError */
@@ -5807,15 +5811,14 @@ $(document).ready(function () {
                                     $(this).prop("disabled", true);
                                 }
                             });
-                        } else {
-                            if (errors.offlineCardPaymentNotAvailable === true) {
-                                /* делаем неактивным способ оплаты Оплата картой при получении */
-                                this.objectForm.find("#cashless-type option").each(function () {
-                                    if ($(this).val() == 1) {
-                                        $(this).prop("disabled", true);
-                                    }
-                                });
-                            }
+                        }
+                        if (errors.offlineCardPaymentNotAvailable === true) {
+                            /* делаем неактивным способ оплаты Оплата картой при получении */
+                            this.objectForm.find("#cashless-type option").each(function () {
+                                if ($(this).val() == 1) {
+                                    $(this).prop("disabled", true);
+                                }
+                            });
                         }
                     } else {
                         this.objectForm.find("#DELIVERY_TYPE .page.two .select .comment").hide();
@@ -5836,16 +5839,15 @@ $(document).ready(function () {
                                         }
                                     });
                                     error.text("Оплата картой в онлайне и последующая выдача заказа в этом пункте НЕВОЗМОЖНА. Выберите другой способ оплаты.");
-                                } else {
-                                    if (errors.offlineCardPaymentNotAvailable === true) {
-                                        /* делаем неактивным способ оплаты Оплата картой при получении */
-                                        this.objectForm.find("#cashless-type option").each(function () {
-                                            if ($(this).val() == 1) {
-                                                $(this).prop("disabled", true);
-                                            }
-                                        });
-                                        error.text("Оплата картой при получении в этом пункте НЕВОЗМОЖНА. Выберите другой способ оплаты.");
-                                    }
+                                }
+                                if (errors.offlineCardPaymentNotAvailable === true) {
+                                    /* делаем неактивным способ оплаты Оплата картой при получении */
+                                    this.objectForm.find("#cashless-type option").each(function () {
+                                        if ($(this).val() == 1) {
+                                            $(this).prop("disabled", true);
+                                        }
+                                    });
+                                    error.text("Оплата картой при получении в этом пункте НЕВОЗМОЖНА. Выберите другой способ оплаты.");
                                 }
                                 this.objectForm.find("#cashless-type option:selected").removeAttr("selected");
                                 this.objectForm.find(".card-offline").hide();
