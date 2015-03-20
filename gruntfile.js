@@ -33,7 +33,19 @@ module.exports = function (grunt) {
                     /* Шаблон страницы товара */
                     'build/bitrix/templates/.default/components/os/catalog.element_3.0/cosmo/script.js': ['source/bitrix/templates/.default/components/os/catalog.element_3.0/cosmo/script.js'],
                     /* Форма отзывов */
-                    'build/bitrix/templates/.default/components/os/review_form/cosmo/script.js': ['source/bitrix/templates/.default/components/os/review_form/cosmo/script.js']
+                    'build/bitrix/templates/.default/components/os/review_form/cosmo/script.js': ['source/bitrix/templates/.default/components/os/review_form/cosmo/script.js'],
+                    /* Лендинг объявлений */
+                    'build/add-ads/js/script.js': [
+                        'source/bitrix/js/cosmo/1-01-jquery.js',
+                        'source/bitrix/js/cosmo/1-06-jquery.maskedinput.js',
+                        'source/add-ads/js/script.js'
+                    ],
+                    /* Лендинг про ледоступы */
+                    'build/lending-ledostupi/script.js': [
+                        'source/bitrix/js/cosmo/1-01-jquery.js',
+                        'source/bitrix/js/cosmo/1-06-jquery.maskedinput.js',
+                        'source/lending-ledostupi/script.js'
+                    ]
                 }
             }
         },
@@ -60,7 +72,11 @@ module.exports = function (grunt) {
                     /* Шаблон страницы товара */
                     'build/bitrix/templates/.default/components/os/catalog.element_3.0/cosmo/script.js': ['build/bitrix/templates/.default/components/os/catalog.element_3.0/cosmo/script.js'],
                     /* Форма отзывов */
-                    'build/bitrix/templates/.default/components/os/review_form/cosmo/script.js': ['build/bitrix/templates/.default/components/os/review_form/cosmo/script.js']
+                    'build/bitrix/templates/.default/components/os/review_form/cosmo/script.js': ['build/bitrix/templates/.default/components/os/review_form/cosmo/script.js'],
+                    /* Лендинг объявлений */
+                    'build/add-ads/js/script.js': 'build/add-ads/js/script.js',
+                    /* Лендинг про ледоступы */
+                    'build/lending-ledostupi/script.js': 'build/lending-ledostupi/script.js'
                 }
             }
         },
@@ -78,7 +94,7 @@ module.exports = function (grunt) {
                         dest: 'source/bitrix/js/cosmo/1-09-jquery.json.min.js'
                     },
                     /* update JSON-js plugin */
-                    {
+                    {                        
                         src: 'source/plugins/json-js/json2.js',
                         dest: 'source/bitrix/js/cosmo/1-10-json.js'
                     }
