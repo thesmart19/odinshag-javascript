@@ -3586,28 +3586,33 @@ $(document).ready(function () {
                 if (query.length > 2 && typeof searchSuggestions !== "undefined") {
                     if (!object.hasClass("is_busy")) {
                         object.addClass("is_busy");
-                        $.post("/ajax/search.php", {
-                            action: 'search',
-                            query: query
-                        }, function (data) {
-                            object.removeClass("is_busy");
-                            if (data) {
-                                searchSuggestions.addClass("box-shadow-suggestions");
-                                searchSuggestions.addClass("border-suggestions");
-                                searchSuggestions.html(data).show();
-                                searchSuggestions.find(".suggestion-block .suggestion-content ul li a, .search-total a").each(function () {
-                                    $(this).mouseover(function () {
-                                        $(this).addClass("hover");
+                        var timer = setTimeout( function () {
+                            $.post("/ajax/search.php", {
+                                action: 'search',
+                                query: query
+                            }, function (data) {
+                                object.removeClass("is_busy");
+                                if (data) {
+                                    console.log(data);
+                                    searchSuggestions.addClass("box-shadow-suggestions");
+                                    searchSuggestions.addClass("border-suggestions");
+                                    if(!(data.indexOf("не найдено") != -1 && query.indexOf(" ") > 0)) {
+                                        searchSuggestions.html(data).show();
+                                    }
+                                    searchSuggestions.find(".suggestion-block .suggestion-content ul li a, .search-total a").each(function () {
+                                        $(this).mouseover(function () {
+                                            $(this).addClass("hover");
+                                        });
+                                        $(this).mouseleave(function () {
+                                            $(this).removeClass("hover");
+                                        });
                                     });
-                                    $(this).mouseleave(function () {
-                                        $(this).removeClass("hover");
-                                    });
-                                });
-                            } else {
-                                searchSuggestions.removeClass("box-shadow-suggestions");
-                                searchSuggestions.removeClass("border-suggestions");
-                            }
-                        });
+                                } else {
+                                    searchSuggestions.removeClass("box-shadow-suggestions");
+                                    searchSuggestions.removeClass("border-suggestions");
+                                }
+                            });
+                        }, 500);
                     }
                 }
             }
