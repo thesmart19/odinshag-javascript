@@ -423,7 +423,7 @@ $(document).ready( function()
 	$(".box .content .column.left .block .categories.subcats ul li").each( function()
 	{
 		var object = $(this);
-		categoriesItemsHeight += parseInt(object.height()) + 20;
+		categoriesItemsHeight += parseInt(object.height()) + 27;
 	});
 	/* если высота списка подкатегорий меньше высоты блока - сокращаем */
 	if( categoriesItemsHeight < categoriesListHeight)
