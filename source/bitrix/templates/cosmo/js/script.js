@@ -152,11 +152,6 @@ $(document).ready( function()
             }
 		}
 		/* отображаем форму авторизации пользователя */
-		/*if(parent.hasClass("user"))
-		{
-			parent.addClass("active");
-			parent.find(".message").show();
-		}*/
 		event.preventDefault();
 	});
 	/* наведение мыши на корзину */
@@ -485,7 +480,7 @@ $(document).ready( function()
             if(typeof yaCounter10648792 !== "undefined") yaCounter10648792.reachGoal("ITEM_POLNAJA_VERSIJA");
         }
         else { siteFullVersion = 0; }
-        $.cookie(cookieName, siteFullVersion, { path: "/" } ); /* expires: 30 */
+        $.cookie(cookieName, siteFullVersion, { path: "/" } );
         window.setTimeout(function() { window.location.reload(true); }, 500);
         event.preventDefault();
     });
