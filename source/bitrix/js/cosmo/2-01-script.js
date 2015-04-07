@@ -2032,7 +2032,7 @@ $(document).ready(function () {
             if (item.length) /* функция работает если есть хотябы один товар */ {
                 var animationDuration = duration; /* задержка анимации */
                 var wrapWidth = object.find(".items-block").width(); /* вычисляем ширину обертки */
-                var blockWidth = item.width() + 1; /* вычисляем ширину одного блока + 1 пиксель правый бордер */
+                var blockWidth = item.width(); /* вычисляем ширину одного блока */
                 var productsPerBlock = Math.round(wrapWidth / blockWidth); /* количество товаров в блоке */
                 if (isNaN(productsPerBlock) || productsPerBlock === -Infinity) productsPerBlock = 0;
                 var productsTotalCount = item.length; /* общее количество товаров */
@@ -2112,10 +2112,13 @@ $(document).ready(function () {
                             }, animationDuration, function () {
                                 /* смещаем блок со списком товаров вправо
                                 величина смещения = ширине всего блока * ширину блока */
-                                if (ulItems.css("left") == -(itemsBlockWidth - productsPerBlock * blockWidth) + "px")
+                                var l = parseInt(ulItems.css("left"));
+                                var cl = -(itemsBlockWidth - productsPerBlock * blockWidth);
+                                if ( (l ==  cl) || (l > cl - 5 && l < cl + 5) ) {
                                     itemsBlock.css({
                                         "left": -(productsPerBlock * blockWidth)
                                     });
+                                }
                                 isMoving = false;
                             });
                         }
@@ -2131,10 +2134,12 @@ $(document).ready(function () {
                             }, animationDuration, function () {
                                 /* смещаем блок со списком товаров влево
                                 величина смещения = ширине всего блока - ширине блока из productsPerBlock товаров * 2 */
-                                if (ulItems.css("left") == "0px")
+                                var l = parseInt(ulItems.css("left"));
+                                if ( (l == 0) || (l > -5 && l < 5) ) {
                                     itemsBlock.css({
                                         "left": -(itemsBlockWidth - (productsPerBlock * 2) * blockWidth)
                                     });
+                                }
                                 isMoving = false;
                             });
                         }
@@ -2146,7 +2151,7 @@ $(document).ready(function () {
                         initTimer = setTimeout(function () {
                             /* в адаптивной версии сайта ширина блока с товарами меняется */
                             wrapWidth = object.find(".items-block").width();
-                            blockWidth = item.width() + 1;
+                            blockWidth = item.width();
                             productsPerBlock = Math.round(wrapWidth / blockWidth);
                             object.find(".items-block ul.items").css({
                                 "left": -(productsPerBlock * blockWidth)

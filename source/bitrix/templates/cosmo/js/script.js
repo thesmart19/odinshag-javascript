@@ -420,6 +420,8 @@ $(document).ready( function()
 		var object = $(this);
 		categoriesItemsHeight += parseInt(object.height()) + 27;
 	});
+    /* небольшой костыль высоты */
+    categoriesItemsHeight -= 1;
 	/* если высота списка подкатегорий меньше высоты блока - сокращаем */
 	if( categoriesItemsHeight < categoriesListHeight)
 	{
