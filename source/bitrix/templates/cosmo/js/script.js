@@ -2,7 +2,7 @@
 if(typeof jQuery !== "undefined" && jQuery.isFunction($(window).width) && typeof systemParameters === "object")
 {
     var globalViewportWidth = $(window).width();
-    if(globalViewportWidth > 0 && globalViewportWidth < 570)
+    if(globalViewportWidth > 0 && globalViewportWidth <= 570)
     { 
         /* телефон */ systemParameters.mobileDevice.isCellPhone = true;
         if($.cookie("site_full_version") == 1)
@@ -137,6 +137,16 @@ $(document).ready( function()
 			parent.find(".message.product-preview").remove();
 			/* показываем товары */
 			parent.find(".message").show();
+            console.log(systemParameters.mobileDevice.isCellPhone);
+            if(typeof systemParameters === "object" && systemParameters.mobileDevice.isCellPhone)
+            {
+                /* фикс ширины блока с товарами */
+                /* растягиваем блок на всю ширину экрана телефона */
+                var w = $(window).width() - 2;
+                parent.find(".message").width(w);
+                parent.find(".message ul.items").width(w);
+                parent.find(".message ul.items li").width(w);
+            }
             if (jQuery.isFunction( parent.find(".message ul.items").customScrollbar )) {
                 parent.find(".message ul.items").customScrollbar( { preventDefaultScroll : true } );
                 parent.find(".message ul.items").on("customScroll", function(event, scrollData)

@@ -581,6 +581,15 @@ function put2cart(object, id, source) {
             message += '<div class="border">&nbsp;</div>';
             message += '</div>';
             $(".header.fixed .wrap .basket").append(message);
+            if(typeof systemParameters === "object" && systemParameters.mobileDevice.isCellPhone)
+            {
+                /* фикс ширины блока с товарами */
+                /* растягиваем блок на всю ширину экрана телефона */
+                var w = $(window).width() - 2;
+                $(".header.fixed .wrap .basket .message").width(w);
+                $(".header.fixed .wrap .basket .message ul.items").width(w);
+                $(".header.fixed .wrap .basket .message ul.items li").width(w);
+            }
             /* делаем корзину активной */
             $(".header.fixed .wrap .basket").addClass("active");
             $(".header.fixed .wrap .basket .message").hide();
