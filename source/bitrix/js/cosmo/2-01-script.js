@@ -1450,7 +1450,7 @@ $(document).ready(function () {
                     clearTimeout(initTimer);
                     initTimer = setTimeout(function () {
                         /* в адаптивной версии сайта ширина слайдера меняется */
-                        if (object.find(".wrap").width() == 741 || object.find(".wrap").width() == 758) {
+                        if (systemParameters.mobileDevice.isTabletPC || object.find(".wrap").width() == 741 || object.find(".wrap").width() == 758) {
                             mainImage.find("li a img").each(function (index) {
                                 if (index == 0) {
                                     /* обновляем значения переменных */
@@ -2038,10 +2038,27 @@ $(document).ready(function () {
             var item = object.find(".items-block ul.items .item");
             var isMoving = false;
             var initTimer;
-            if (item.length) /* функция работает если есть хотябы один товар */ {
+            var blockMult = 4; /* по 4 блока */
+            if (item.length) { /* функция работает если есть хотябы один товар */
                 var animationDuration = duration; /* задержка анимации */
                 var wrapWidth = object.find(".items-block").width(); /* вычисляем ширину обертки */
-                var blockWidth = item.width(); /* вычисляем ширину одного блока */
+                /* корректируем blockMult количество блоков в зависимости от ширины обертки */
+                if(wrapWidth >= 540) {
+                    blockMult = 4;
+                } else {
+                    if(wrapWidth >= 405) {
+                        blockMult = 3;
+                    } else {
+                        if(wrapWidth >= 270) {
+                            blockMult = 2;
+                        } else {
+                            blockMult = 1;
+                        }
+                    }
+                }
+                /* вычисляем ширину одного блока - var blockWidth = item.width(); */
+                /* минимальная ширина блока 135 */
+                var blockWidth = Math.ceil(wrapWidth / blockMult);
                 var productsPerBlock = Math.round(wrapWidth / blockWidth); /* количество товаров в блоке */
                 if (isNaN(productsPerBlock) || productsPerBlock === -Infinity) productsPerBlock = 0;
                 var productsTotalCount = item.length; /* общее количество товаров */
@@ -2053,7 +2070,7 @@ $(document).ready(function () {
                     if (isNaN(blocksTotalCount)) blocksTotalCount = 1;
                     /* количество товаров может быть не кратно числу товаров в одном блоке
                     вычисляем количество недостающих товаров */
-                    var need = (blocksTotalCount * productsPerBlock) - productsTotalCount;
+                    var need = (blocksTotalCount * productsPerBlock) - productsTotalCount;                    
                     if (productsTotalCount >= productsPerBlock) {
                         /* выбираем первые need товаров и добавляем их в конец списка */
                         item.each(function (index) {
@@ -2103,6 +2120,8 @@ $(document).ready(function () {
                         }
                         object.find(".items-block ul.items").prepend("<li class='item'>" + $(item[i]).html() + "</li>");
                     }
+                    /* устанавливаем ширину блока в верстке */
+                    object.find(".items-block ul.items li.item").width(blockWidth);
                     /* устанавливаем ширину блока со списком товаров */
                     var itemsBlockWidth = (productsTotalCount + need + productsPerBlock * 2) * blockWidth;
                     object.find(".items-block ul.items").width(itemsBlockWidth);
@@ -2122,7 +2141,7 @@ $(document).ready(function () {
                                 /* смещаем блок со списком товаров вправо
                                 величина смещения = ширине всего блока * ширину блока */
                                 var l = parseInt(ulItems.css("left"));
-                                var cl = -(itemsBlockWidth - productsPerBlock * blockWidth);
+                                var cl = -(itemsBlockWidth - productsPerBlock * blockWidth);                                
                                 if ( (l ==  cl) || (l > cl - 5 && l < cl + 5) ) {
                                     itemsBlock.css({
                                         "left": -(productsPerBlock * blockWidth)
@@ -2160,8 +2179,23 @@ $(document).ready(function () {
                         initTimer = setTimeout(function () {
                             /* в адаптивной версии сайта ширина блока с товарами меняется */
                             wrapWidth = object.find(".items-block").width();
-                            blockWidth = item.width();
+                            if(wrapWidth >= 540) {
+                                blockMult = 4;
+                            } else {
+                                if(wrapWidth >= 405) {
+                                    blockMult = 3;
+                                } else {
+                                    if(wrapWidth >= 270) {
+                                        blockMult = 2;
+                                    } else {
+                                        blockMult = 1;
+                                    }
+                                }
+                            }
+                            blockWidth = Math.ceil(wrapWidth / blockMult);
+                            object.find(".items-block ul.items li.item").width(blockWidth);
                             productsPerBlock = Math.round(wrapWidth / blockWidth);
+                            itemsBlockWidth = (productsTotalCount + need + productsPerBlock * 2) * blockWidth;
                             object.find(".items-block ul.items").css({
                                 "left": -(productsPerBlock * blockWidth)
                             });
@@ -3607,7 +3641,6 @@ $(document).ready(function () {
                             }, function (data) {
                                 object.removeClass("is_busy");
                                 if (data) {
-                                    console.log(data);
                                     searchSuggestions.addClass("box-shadow-suggestions");
                                     searchSuggestions.addClass("border-suggestions");
                                     if(!(data.indexOf("не найдено") != -1 && query.indexOf(" ") > 0)) {
