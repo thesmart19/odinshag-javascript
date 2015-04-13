@@ -2177,7 +2177,6 @@ $(document).ready(function () {
                     $(window).resize(function () {
                         clearTimeout(initTimer);
                         initTimer = setTimeout(function () {
-                            /* в адаптивной версии сайта ширина блока с товарами меняется */
                             wrapWidth = object.find(".items-block").width();
                             if(wrapWidth >= 540) {
                                 blockMult = 4;
@@ -2196,6 +2195,7 @@ $(document).ready(function () {
                             object.find(".items-block ul.items li.item").width(blockWidth);
                             productsPerBlock = Math.round(wrapWidth / blockWidth);
                             itemsBlockWidth = (productsTotalCount + need + productsPerBlock * 2) * blockWidth;
+                            object.find(".items-block ul.items").width(itemsBlockWidth);
                             object.find(".items-block ul.items").css({
                                 "left": -(productsPerBlock * blockWidth)
                             });
