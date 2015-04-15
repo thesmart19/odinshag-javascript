@@ -4251,7 +4251,11 @@ $(document).ready(function () {
                     /* общая стоимость заказа без скидок */
                     cartTotalNoDiscounts: 0,
                     /* оформить заказ без подтверждения оператором */
-                    orderWithoutConfirmation: 0
+                    orderWithoutConfirmation: 0,
+                    /* отслеживание адреса email для брошенных корзин */
+                    emailTracking: 0,
+                    /* адрес отслеживаемой почты */
+                    emailTrackingValue: 0
                 };
                 /* типы ошибок */
                 this.orderFormErrors = {
@@ -4406,6 +4410,9 @@ $(document).ready(function () {
                         while (targetClass.indexOf(" ") != -1) {
                             targetClass = targetClass.replace(" ", "");
                         }
+                        /* # отслеживание адреса email для брошенных корзин */
+                        EmailTracking(event);
+                        /* / отслеживание адреса email для брошенных корзин */
                         switch (targetClass) {
                             /* #изменение количества товара */
                         case "plus":
@@ -5516,6 +5523,7 @@ $(document).ready(function () {
                         }
                         */
                         /* отправляем информацию об ошибке в errorception */
+                        /*
                         if (typeof _errs === "object" && typeof _errs.push === "function") {
                             _errs.meta = {
                                 invoicePrice: model.orderFormData.invoicePrice,
@@ -5554,7 +5562,7 @@ $(document).ready(function () {
                             };
                             _errs.push(new Error("Order Form Error"));
                         }
-
+                        */
                         $("html, body").animate({
                             scrollTop: top
                         }, 500);
@@ -6277,6 +6285,48 @@ $(document).ready(function () {
                     };
                     return obj;
                 }
+
+                /* # отслеживание адреса email для брошенных корзин */
+                function EmailTracking(event) {
+                    if(model.orderFormData.emailTracking == 1) {
+                        var section = $(event.target);
+                        /* ищем блок с классом section */
+                        while(typeof section.attr("class") === "undefined" || section.attr("class").indexOf("section") == -1 ) {
+                            section = section.parent();
+                        }
+                        /* отсекаем первые разделы с товарами и контактной информацией */
+                        if(section.attr("class").indexOf("first") == -1 && section.attr("class").indexOf("contacts") == -1) {
+                            /* проверяем состояние галки Получать уведомления о состоянии заказа по смс и почте */
+                            if(object.find("input[name='need_feedback']").prop("checked") === true) {
+                                /* заполнено ли поле email */
+                                var email = object.find("input[name='EMAIL']");
+                                if(!email.hasClass("error") && model.orderFormData.emailTrackingValue != email.val()) {
+                                    /* адрес email изменился */
+                                    model.orderFormData.emailTrackingValue = email.val().toLowerCase();
+                                    if(typeof model.orderFormData.emailTrackingValue === "string") {
+                                        /* отправляем данные на сервер */
+                                        $.post( "/ajax/basket_tracking.php", {
+                                            email: model.orderFormData.emailTrackingValue,
+                                            fid: model.orderFormData.personFID
+                                        }, function(data) {
+                                            /*
+                                            console.log("POST результат:");
+                                            console.log(data);
+                                            */
+                                        }).always( function() {
+                                            /* console.log("POST запрос"); */
+                                        }).done( function() {
+                                            /* console.log("POST Email отправлен"); */
+                                        }).fail( function() {
+                                            /* console.log("POST ERROR"); */
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                /* / отслеживание адреса email для брошенных корзин */
             };
             /* ************************************************************* */
             /* / View */
@@ -6561,6 +6611,8 @@ $(document).ready(function () {
                         if (typeof view.objectForm.find("input[name='WITHOUT_CONIFRMATION']").val() !== "undefined" && view.objectForm.find("input[name='WITHOUT_CONIFRMATION']").val() == 1) {
                             model.orderFormData.orderWithoutConfirmation = true;
                         }
+                        model.orderFormData.emailTracking = parseInt(view.objectForm.find("input[name='EMAIL_TRACKING']").val());
+                        if (isNaN(model.orderFormData.emailTracking)) model.orderFormData.emailTracking = 0;
                         /* проверка количества бонусов */
                         if (model.orderFormData.bonusCountToPay > model.orderFormData.bonusCountCanPay) {
                             model.orderFormData.bonusCountToPay = model.orderFormData.bonusCountCanPay;
