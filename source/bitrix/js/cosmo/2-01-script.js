@@ -9,6 +9,12 @@ var systemParameters = {
     },
     user: {
         isAuth: false
+    },
+    /* сквозной баннер */
+    bannerSection: {
+        current: 0,
+        normal: 0,
+        wide: 0
     }
 };
 /*
@@ -1315,10 +1321,9 @@ $(document).ready(function () {
                             li.find("a.zoom").css({
                                 "cursor": "default"
                             });
-                            li.find("a.zoom .lens").css({
+                            li.find("a.zoom .lens, a.zoom .full-size").css({
                                 "display": "none"
                             });
-                            /* li.find("a.zoom .lens").css( { "backgroundPosition" : "0 -79px" } ); */
                         } else {
                             /* инициализируем плагин */
                             li.find("a.zoom").zoom({
@@ -1341,8 +1346,21 @@ $(document).ready(function () {
                 }).each(function () /* фикс кеширования картинок */ {
                     if (this.complete) $(this).load();
                 });
+                /* сдвигаем иконки увеличения и нового окна */
+                if(mainImageCount == 1) {
+                    mainImage.find("li a.zoom span.lens").css( { "right" : 47 } );
+                    mainImage.find("li a.zoom span.full-size").css( { "right" : 12 } );
+                }
                 /* увеличение главной картинки */
                 mainImage.find("li a.zoom").click(function (event) {
+                    event.preventDefault();
+                });
+                /* открыть фотографию в новом окне */
+                mainImage.find("a.zoom .full-size").click( function(event) {
+                    var img = $(this).parent().find("img:not(.zoomImg)");
+                    if(img.length == 1) {
+                        window.open(img.attr("src"), '_blank');
+                    }
                     event.preventDefault();
                 });
                 /* скрипт работает только в том случае, если количество главных картинок и миниатюр совпадает */
@@ -2640,7 +2658,7 @@ $(document).ready(function () {
                     }
                 }
                 /* переход по ссылке с нового пункта меню Распродажа */
-                if (obj.hasClass("wholesale"))
+                if (obj.parent().hasClass("wholesale"))
                     return true;
                 event.preventDefault();
             });
@@ -6940,8 +6958,57 @@ function WindowOnResize() {
                     $(".category.box .content .column.left .catalog .content").hide();
             }
         }
-        /* костыль для позиционирования LiveTex */
-        /* $(".lt-invite").css( { "left" : "auto" } ); */
+        /* сквозные баннеры в каталоге товаров */
+        if(systemParameters.mobileDevice.isPC === true && $(".banner-ext").length != 0)
+        {   
+            if(systemParameters.bannerSection.current == "wide") {
+                if(systemParameters.bannerSection.wide != 0)
+                {
+                    $(".banner-ext img").attr( { "src" : systemParameters.bannerSection.wide } );
+                    if(!$(".banner-ext").hasClass("banner-wide")) {
+                        $(".banner-ext").addClass("banner-wide");
+                    }
+                }
+                else
+                {
+                    $(".banner-ext img").attr( { "src" : systemParameters.bannerSection.normal } );
+                    systemParameters.bannerSection.current == "normal";
+                    if($(".banner-ext").hasClass("banner-wide")) {
+                        $(".banner-ext").removeClass("banner-wide");
+                    }
+                }
+            } else {
+                if(systemParameters.bannerSection.current == "normal") {
+                    if(systemParameters.bannerSection.wide != 0)
+                    {
+                        $(".banner-ext img").attr( { "src" : systemParameters.bannerSection.wide } );
+                        systemParameters.bannerSection.current = "wide";
+                        if(!$(".banner-ext").hasClass("banner-wide")) {
+                            $(".banner-ext").addClass("banner-wide");
+                        }
+                    }
+                    else
+                    {
+                        $(".banner-ext img").attr( { "src" : systemParameters.bannerSection.normal } );
+                        if($(".banner-ext").hasClass("banner-wide")) {
+                            $(".banner-ext").removeClass("banner-wide");
+                        }
+                    }
+                }
+            }
+        } else {
+            if(systemParameters.mobileDevice.isTabletPC === true) {
+                if(systemParameters.bannerSection.current == "wide")
+                {
+                    $(".banner-ext img").attr( { "src" : systemParameters.bannerSection.normal } );
+                    systemParameters.bannerSection.current == "normal";
+                    if($(".banner-ext").hasClass("banner-wide")) {
+                        $(".banner-ext").removeClass("banner-wide");
+                    }
+                }
+            }
+        }
+        /* / сквозные баннеры в каталоге товаров */
     }
     /* / Изменение размеров окна */
     /* Склонение слов */

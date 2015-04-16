@@ -137,7 +137,6 @@ $(document).ready( function()
 			parent.find(".message.product-preview").remove();
 			/* показываем товары */
 			parent.find(".message").show();
-            console.log(systemParameters.mobileDevice.isCellPhone);
             if(typeof systemParameters === "object" && systemParameters.mobileDevice.isCellPhone)
             {
                 /* фикс ширины блока с товарами */
@@ -416,6 +415,46 @@ $(document).ready( function()
 		return true;
 	});
 	/* / Меню Каталог */
+    
+    /* сквозные баннеры в каталоге товаров */
+    /* проверяем есть ли у баннера широкая версия */
+    if($(".banner-ext").length != 0) {
+        var banner = $(".banner-ext img").attr("src");
+        var bannerWide = $(".banner-ext img").data("src");
+        if(typeof bannerWide !== "undefined") {
+            systemParameters.bannerSection.current = "wide";
+            systemParameters.bannerSection.normal = banner;
+            systemParameters.bannerSection.wide = bannerWide;
+        } else {
+            systemParameters.bannerSection.current = "normal";
+            systemParameters.bannerSection.normal = banner;
+            systemParameters.bannerSection.wide = 0;
+        }
+        if(systemParameters.mobileDevice.isPC === true)
+        {
+            if(systemParameters.bannerSection.current == "wide") {
+                if(systemParameters.bannerSection.wide != 0)
+                {
+                    $(".banner-ext img").attr( { "src" : systemParameters.bannerSection.wide } );
+                    if(!$(".banner-ext").hasClass("banner-wide")) {
+                        $(".banner-ext").addClass("banner-wide");
+                    }
+                }
+            }
+        } else {
+            if(systemParameters.mobileDevice.isTabletPC === true) {
+                if(systemParameters.bannerSection.current == "wide")
+                {
+                    $(".banner-ext img").attr( { "src" : systemParameters.bannerSection.normal } );
+                    systemParameters.bannerSection.current == "normal";
+                    if($(".banner-ext").hasClass("banner-wide")) {
+                        $(".banner-ext").removeClass("banner-wide");
+                    }
+                }
+            }
+        }
+    }
+    /* / сквозные баннеры в каталоге товаров */
 	
 	/* Описание категории на странице списка товаров */
 	$(".box .description").showCategoryDescription(1000);
