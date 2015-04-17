@@ -4287,6 +4287,8 @@ $(document).ready(function () {
                     onlinePaymentNotAvailable: false,
                     /* оплата картой при получении не возможна */
                     offlineCardPaymentNotAvailable: false,
+                    /* оплата банковским переводом только для физ лица */
+                    bankPaymentForPersonOnly: false,
                     /* не выбран тип плательщика */
                     personFIDMissing: false,
                     /* не выбран тип безналичной оплаты */
@@ -4852,6 +4854,10 @@ $(document).ready(function () {
                             object.find("#cashless-type option").each(function () {
                                 $(this).prop("disabled", false);
                             });
+                            /* все типы плательщика разрешены */
+                            object.find("#payment-cashless option").each(function () {
+                                $(this).prop("disabled", false);
+                            });
                             /* Оплата картой при получении - проверка возможности */
                             /* проверка только для городов: Москва, Санкт-Петербург */
                             var data = {};
@@ -4866,17 +4872,21 @@ $(document).ready(function () {
                             } else {
                                 data.onlinePaymentNotAvailable = false;
                             }
-                            if (data.offlineCardPaymentNotAvailable === true || data.onlinePaymentNotAvailable === true) {
-                                /* onError */
-                                object.trigger(object.customEvents[500], [data]);
+                            /* Оплата банковским переводом */
+                            if (target.find("option:selected").data("only-for-f") == 1) {
+                                data.bankPaymentForPersonOnly = true;
+                            } else {
+                                data.bankPaymentForPersonOnly = false;
                             }
-
+                            /* onError */
+                            object.trigger(object.customEvents[500], [data]);
                         } else {
                             var data = {
                                 deliveryIDMissing: true,
                                 offlineCardPaymentNotAvailable: false,
                                 onlinePaymentNotAvailable: false,
-                                paymentCashlessTypeMissing: false
+                                paymentCashlessTypeMissing: false,
+                                bankPaymentForPersonOnly: false
                             };
                             /* onError */
                             object.trigger(object.customEvents[500], [data]);
@@ -4914,37 +4924,50 @@ $(document).ready(function () {
                         }
                         /* onChangePaymentType */
                         $(this).trigger(object.customEvents[2], [data]);
-                        if (data.paymentCashlessType == 1 || data.paymentCashlessType == 2) {
-                            var deliveryType = {};
-                            /* onGetDeliveryType */
-                            $(this).trigger(object.customEvents[5], [deliveryType]);
-                            if (deliveryType.data == "pickup") {
-                                if (data.paymentCashlessType == 1) {
-                                    /* все виды оплаты разрешены */
-                                    object.find("#cashless-type option").each(function () {
-                                        $(this).prop("disabled", false);
-                                    });
-                                    /* Оплата картой при получении - проверка возможности */
-                                    /* проверка только для городов: Москва, Санкт-Петербург */
-                                    if ($("#delivery-pickup").find("option:selected").data("has-terminal") == 0) {
-                                        var data = {
-                                            offlineCardPaymentNotAvailable: true
-                                        };
-                                        /* onError */
-                                        object.trigger(object.customEvents[500], [data]);
-                                    }
-                                }
-                                if (data.paymentCashlessType == 2) {
-                                    /* Оплата картой онлайн - проверка возможности онлайн оплаты */
-                                    if ($("#delivery-pickup").find("option:selected").data("can-pay-online") == 0) {
-                                        var data = {
-                                            onlinePaymentNotAvailable: true
-                                        };
-                                        /* onError */
-                                        object.trigger(object.customEvents[500], [data]);
-                                    }
+                        var deliveryType = {};
+                        /* onGetDeliveryType */
+                        $(this).trigger(object.customEvents[5], [deliveryType]);
+                        if (deliveryType.data == "pickup") {
+                            if (data.paymentCashlessType == 1) {
+                                /* все виды оплаты разрешены */
+                                object.find("#cashless-type option").each(function () {
+                                    $(this).prop("disabled", false);
+                                });
+                                /* Оплата картой при получении - проверка возможности */
+                                /* проверка только для городов: Москва, Санкт-Петербург */
+                                if ($("#delivery-pickup").find("option:selected").data("has-terminal") == 0) {
+                                    var data = {
+                                        offlineCardPaymentNotAvailable: true
+                                    };
+                                    /* onError */
+                                    object.trigger(object.customEvents[500], [data]);
                                 }
                             }
+                            if (data.paymentCashlessType == 2) {
+                                /* Оплата картой онлайн - проверка возможности онлайн оплаты */
+                                if ($("#delivery-pickup").find("option:selected").data("can-pay-online") == 0) {
+                                    var data = {
+                                        onlinePaymentNotAvailable: true
+                                    };
+                                    /* onError */
+                                    object.trigger(object.customEvents[500], [data]);
+                                }
+                            }
+                            if (data.paymentCashlessType == 3) {
+                                /* все типы плательщика разрешены */
+                                object.find("#payment-cashless option").each(function () {
+                                    $(this).prop("disabled", false);
+                                });
+                                var data = {};
+                                // Оплата банковским переводом
+                                if ($("#delivery-pickup").find("option:selected").data("only-for-f") == 1) {
+                                    data.bankPaymentForPersonOnly = true;
+                                } else {
+                                    data.bankPaymentForPersonOnly = false;
+                                }
+                                // onError
+                                object.trigger(object.customEvents[500], [data]);
+                            }                                
                         }
                         break;
                         /* /тип безналичной оплаты */
@@ -5880,7 +5903,7 @@ $(document).ready(function () {
                     var errors = {};
                     /* onGetOrderFormErrors */
                     this.objectForm.trigger(this.objectForm.customEvents[10], [errors]);
-                    errors = errors.data
+                    errors = errors.data;
                     if (typeof disablePaymentMethod !== "undefined" && disablePaymentMethod === true) {
                         if (errors.onlinePaymentNotAvailable === true) {
                             /* делаем неактивным способ оплаты Оплата картой онлайн */
@@ -5894,6 +5917,14 @@ $(document).ready(function () {
                             /* делаем неактивным способ оплаты Оплата картой при получении */
                             this.objectForm.find("#cashless-type option").each(function () {
                                 if ($(this).val() == 1) {
+                                    $(this).prop("disabled", true);
+                                }
+                            });
+                        }
+                        if (errors.bankPaymentForPersonOnly === true) {
+                            /* делаем неактивными типы плательщика - юр лицо и индивидульный предприниматель */
+                            this.objectForm.find("#payment-cashless option").each(function () {
+                                if ($(this).val() == 2 || $(this).val() == 3) {
                                     $(this).prop("disabled", true);
                                 }
                             });
@@ -6580,6 +6611,16 @@ $(document).ready(function () {
                                 }
                             }
                         }
+                        
+                        if (typeof data.bankPaymentForPersonOnly !== "undefined") {
+                            model.orderFormErrors.bankPaymentForPersonOnly = data.bankPaymentForPersonOnly;
+                            if (model.orderFormErrors.bankPaymentForPersonOnly === true) {
+                                if (model.orderFormData.deliveryType == "pickup") {
+                                        view.showPickupError(true);
+                                }
+                            }
+                        }
+                        
                         if (typeof data.personFIDMissing !== "undefined") {
                             model.orderFormErrors.personFIDMissing = data.personFIDMissing;
                             if (model.orderFormErrors.personFIDMissing === true) {
