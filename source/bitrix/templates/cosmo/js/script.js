@@ -467,7 +467,7 @@ $(document).ready( function()
 	$(".box .content .column.left .block .categories.subcats ul li").each( function()
 	{
 		var object = $(this);
-		categoriesItemsHeight += parseInt(object.height()) + 27;
+		categoriesItemsHeight += parseInt(object.height()) + 1; /* + 27 */
 	});
     /* небольшой костыль высоты */
     categoriesItemsHeight -= 1;
