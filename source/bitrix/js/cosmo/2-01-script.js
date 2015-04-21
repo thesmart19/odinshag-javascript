@@ -3319,6 +3319,23 @@ $(document).ready(function () {
             reqPhone = object.find("input[type='text']." + reqClassName + ".phone");
             /* поиск необязательных полей */
             file = object.find("input[type='file']");
+            /* обработчики событий */
+            object.on("change", "input", function (event) {
+                var target = $(event.target);
+                var targetType = target.attr("type");
+                switch (targetType) {
+                    /* #чекбоксы */
+                    case "checkbox":
+                        var icon = target.parent().find("span.icon");
+                        if (target.prop("checked")) {
+                            icon.addClass("active");
+                        } else {
+                            icon.removeClass("active");
+                        }
+                        break;
+                    /* /чекбоксы */
+                }
+            });
             /* обработчики рейтинга */
             if (reqRating.length > 0) {
                 reqRating.hover(function () {
@@ -4637,6 +4654,14 @@ $(document).ready(function () {
                             if (targetClass == "pickupactive") data.deliveryType = "pickup";
                             /* onChangeDeliveryPrice */
                             $(this).trigger(object.customEvents[1], [data]);
+                            /* все виды оплаты разрешены */
+                            $(this).find("#cashless-type option").each(function () {
+                                $(this).prop("disabled", false);
+                            });
+                            /* все типы плательщика разрешены */
+                            $(this).find("#payment-cashless option").each(function () {
+                                $(this).prop("disabled", false);
+                            });
                             break;
                             /* /измененение способа доставки */
                             /* #измененение способа оплаты */
@@ -5842,7 +5867,7 @@ $(document).ready(function () {
                     /* onGetOrderFormErrors */
                     this.objectForm.trigger(this.objectForm.customEvents[10], [errors]);
                     errors = errors.data;
-                    if (errors.onlinePaymentNotAvailable === true || errors.offlineCardPaymentNotAvailable === true || errors.bankPaymentForPersonOnly === true) {
+                    if ( typeof disablePaymentMethod !== "undefined" && disablePaymentMethod === true ) {
                         /* показываем инфо-сообщение */
                         this.objectForm.find("#DELIVERY_TYPE .page.two .select .info-message").show();
                         
@@ -5870,8 +5895,7 @@ $(document).ready(function () {
                                 }
                             });
                         }
-                    }
-                    if (typeof disablePaymentMethod === "undefined") {
+                    } else {
                         this.objectForm.find("#DELIVERY_TYPE .page.two .select .comment").hide();
                         this.objectForm.find("#DELIVERY_TYPE .page.two .select .calendar").hide();
                         this.objectForm.find("#DELIVERY_TYPE .page.two .select .check").hide();
@@ -5879,6 +5903,7 @@ $(document).ready(function () {
                         if (errors.deliveryIDMissing === true) {
                             error.text("Выберите пункт выдачи товара");
                         } else {
+                            
                             this.objectForm.find("#DELIVERY_TYPE .page.two .select select option:selected").removeAttr("selected");
                             this.objectForm.find("#DELIVERY_TYPE .page.two ul.pickup-details li").removeClass("active");
                             if (errors.onlinePaymentNotAvailable === true) {
@@ -5887,6 +5912,9 @@ $(document).ready(function () {
                             if (errors.offlineCardPaymentNotAvailable === true) {
                                 error.text("Оплата картой при получении в этом пункте НЕВОЗМОЖНА. Выберите другой способ оплаты.");
                             }
+                            if (errors.bankPaymentForPersonOnly === true) {
+                                error.text("Банковский перевод быть не доступен для Юр. лиц и индивидуальных предпринимателей.");
+                            }
                             this.objectForm.find("#cashless-type option:selected").removeAttr("selected");
                             this.objectForm.find(".card-offline").hide();
                             this.objectForm.find(".card-online").hide();
@@ -5894,7 +5922,7 @@ $(document).ready(function () {
                             var data = {
                                 paymentCashlessTypeMissing: true
                             };
-                            /* onError */
+                            // onError
                             object.trigger(object.customEvents[500], [data]);
                         }
                         error.show();
@@ -6039,9 +6067,6 @@ $(document).ready(function () {
                 this.showPaymentCashlessTypeError = function (data) {
                     this.objectForm.find("#PAYMENT_TYPE .page.two .select.cashless-type .check").hide();
                     this.objectForm.find("#PAYMENT_TYPE .page.two .select.cashless-type .error").show();
-                    var errors = {};
-                    /* onGetOrderFormErrors */
-                    this.objectForm.trigger(this.objectForm.customEvents[10], [errors]);
                 };
                 /* тип плательщика не выбран */
                 this.showPaymentCashlessError = function (data) {
@@ -6537,10 +6562,13 @@ $(document).ready(function () {
                             
                             if (model.orderFormData.deliveryType == "pickup") {
                                 if (model.orderFormData.paymentType == "electromoney" || model.orderFormData.paymentType == "cardoffline" || model.orderFormData.paymentType == "cashless") {
-                                    view.showPickupError();
-                                } else {
                                     view.showPickupError(true);
                                 }
+                                /*
+                                else {
+                                    view.showPickupError(true);
+                                }
+                                */
                             }
                         }
                         
@@ -6554,6 +6582,9 @@ $(document).ready(function () {
                             model.orderFormErrors.paymentCashlessTypeMissing = data.paymentCashlessTypeMissing;
                             if (model.orderFormErrors.paymentCashlessTypeMissing === true) {
                                 view.showPaymentCashlessTypeError();
+                                /* костыль */
+                                model.orderFormData.paymentCashlessType = 0;
+                                model.orderFormErrors.paymentCashlessTypeMissing = false;
                             }
                         }
                     }
@@ -6732,6 +6763,7 @@ $(document).ready(function () {
                             }
                         }
                     }
+                    /* console.log(model.orderFormErrors); */
                     /* console.log(model.orderFormData); */
                 }
 
