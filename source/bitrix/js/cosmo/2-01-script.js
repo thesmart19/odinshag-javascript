@@ -3564,8 +3564,16 @@ $(document).ready(function () {
                     formHeight = form.height();
                     /* собираем данные из полей */
                     form.find("input, textarea").each(function () {
-                        var name = $(this).attr("name");
-                        var value = $(this).val();
+                        var name, value;
+                        if ($(this).attr("type") == "checkbox") {
+                            if ($(this).prop("checked") === true) {
+                                name = $(this).attr("name");
+                                value = "on";
+                            }
+                        } else {
+                            name = $(this).attr("name");
+                            value = $(this).val();
+                        }
                         if (typeof name !== "undefined") data[name] = value;
                     });
                     /* добавляем ID сессии */
