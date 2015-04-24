@@ -3588,9 +3588,14 @@ $(document).ready(function () {
                                 if (response["error"] == true)
                                     form.html(GetCommonErrorMessageHtml(response["message"]));
                                 else /* сообщение успешно добавлено */ {
-                                    if (typeof response["message"] !== "undefined")
-                                        form.html(GetCommonMessageHtml(response["message"]));
-                                    else {
+                                    if (typeof response["message"] !== "undefined") {
+                                        /* сообщение для страницы парнера */
+                                        if (form.parent().parent().hasClass("partners")) {
+                                            form.html(GetCommonMessageHtml(systemMessages.info.serviceOrderDone));
+                                        } else {
+                                            form.html(GetCommonMessageHtml(response["message"]));
+                                        }
+                                    } else {
                                         /* ответы от формы быстрого заказа */
                                         if (typeof response.redirect_url !== "undefined") {
                                             document.location.href = response.redirect_url;

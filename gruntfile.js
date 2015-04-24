@@ -34,6 +34,8 @@ module.exports = function (grunt) {
                     'build/bitrix/templates/.default/components/os/catalog.element_3.0/cosmo/script.js': ['source/bitrix/templates/.default/components/os/catalog.element_3.0/cosmo/script.js'],
                     /* Форма отзывов */
                     'build/bitrix/templates/.default/components/os/review_form/cosmo/script.js': ['source/bitrix/templates/.default/components/os/review_form/cosmo/script.js'],
+                    /* страница успешного оформления заказа */
+                    'build/bitrix/templates/.default/components/os/order_detail_new/cosmo/script.js': ['source/bitrix/templates/.default/components/os/order_detail_new/cosmo/script.js'],
                     /* Лендинг объявлений */
                     'build/add-ads/js/script.js': [
                         'source/bitrix/js/cosmo/1-01-jquery.js',
@@ -73,6 +75,8 @@ module.exports = function (grunt) {
                     'build/bitrix/templates/.default/components/os/catalog.element_3.0/cosmo/script.js': ['build/bitrix/templates/.default/components/os/catalog.element_3.0/cosmo/script.js'],
                     /* Форма отзывов */
                     'build/bitrix/templates/.default/components/os/review_form/cosmo/script.js': ['build/bitrix/templates/.default/components/os/review_form/cosmo/script.js'],
+                    /* страница успешного оформления заказа */
+                    'build/bitrix/templates/.default/components/os/order_detail_new/cosmo/script.js': ['build/bitrix/templates/.default/components/os/order_detail_new/cosmo/script.js'],
                     /* Лендинг объявлений */
                     'build/add-ads/js/script.js': 'build/add-ads/js/script.js',
                     /* Лендинг про ледоступы */
