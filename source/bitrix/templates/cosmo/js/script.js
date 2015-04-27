@@ -503,16 +503,10 @@ $(document).ready( function()
 	/* кнопка Наверх */
 	$(".footer.fixed .button.top").windowScrollToTop(1500);
 	
-	/* полезная информация */
-	/*$(".footer.fixed .information-helpful").popUpMenu(500);*/
-	
-	/* онлайн консультация */
-	/*$(".footer.fixed .consultation").popUpMenu(500);*/
-	
 	/* обратная связь */
-	$(".footer.fixed .feedback .message .error-description-form").FormValidation(true, "/ajax/feedback.php");
+	$(".footer .wrap .block.feedback .error-description-form").FormValidation(true, "/ajax/feedback.php");
 	$(".footer.fixed .feedback .message .suggestion-form").FormValidation(true, "/ajax/feedback.php");
-	$(".footer.fixed .feedback .message .tabs").tabsSwitch();
+	/*$(".footer.fixed .feedback .message .tabs").tabsSwitch();*/
 	$(".footer.fixed .feedback").popUpMenu(500);
 	/* / обработчики фиксированного футера */
     
