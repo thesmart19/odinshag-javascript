@@ -19,6 +19,7 @@ module.exports = function (grunt) {
                         'source/bitrix/js/cosmo/1-10-json.js',
                         'source/bitrix/js/cosmo/1-11-jquery.zoom.min.js',
                         /*'source/bitrix/js/cosmo/1-12-zero-clipboard.min.js', --- скрипт временно исключен из проекта */
+                        'source/bitrix/js/cosmo/1-13-jquery.lazyload.min.js', /* новый плагин Lazy Load */
                         'source/bitrix/js/cosmo/2-01-script.js'
                     ],
                     /* main template script */
@@ -101,7 +102,12 @@ module.exports = function (grunt) {
                     {                        
                         src: 'source/plugins/json-js/json2.js',
                         dest: 'source/bitrix/js/cosmo/1-10-json.js'
-                    }
+                    },
+                    /* update Lazy Load Plugin for jQuery */
+                    {                        
+                        src: 'source/plugins/jquery-lazyload/jquery.lazyload.min.js',
+                        dest: 'source/bitrix/js/cosmo/1-13-jquery.lazyload.min.js'
+                    },
                 ]
             }
         }

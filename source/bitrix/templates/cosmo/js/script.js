@@ -62,6 +62,15 @@ function hasSVGSupport()
 	return false;
 }
 
+/* # Lazy Load Plugin for jQuery */
+$(function() {
+    $(".img-lazy").lazyload({
+        event : "onImgLazyLoad"
+    });
+});
+/* / Lazy Load Plugin for jQuery */
+
+
 $(document).ready( function()
 {   
 	/* проверка поддержки браузером формата SVG */
@@ -505,7 +514,7 @@ $(document).ready( function()
 	
 	/* обратная связь */
 	$(".footer .wrap .block.feedback .error-description-form").FormValidation(true, "/ajax/feedback.php");
-	$(".footer.fixed .feedback .message .suggestion-form").FormValidation(true, "/ajax/feedback.php");
+	$(".footer.fixed .feedback .message .suggestion-form").FormValidation(true, "/ajax/feedback.php", "question_success");
 	/*$(".footer.fixed .feedback .message .tabs").tabsSwitch();*/
 	$(".footer.fixed .feedback").popUpMenu(500);
 	/* / обработчики фиксированного футера */
@@ -632,6 +641,12 @@ $(document).ready( function()
 		object.attr( { "placeholder" : placeholder } );
 	});
 	/* / фокус и блюр для всех полей текста */
+});
+$(window).on("load", function () {
+    /* # Lazy Load Plugin for jQuery */
+    /* Новости и статьи на Главной странице */
+    $(".product-list.horizontal.frame .img-lazy").trigger("onImgLazyLoad");
+    /* / Lazy Load Plugin for jQuery */
 });
 /* обработчик для загрузки голосования и рейтинга в карусели товаров */
 $(document).on("DOMNodeInserted", function(event)
