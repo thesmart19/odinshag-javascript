@@ -64,9 +64,11 @@ function hasSVGSupport()
 
 /* # Lazy Load Plugin for jQuery */
 $(function() {
-    $(".img-lazy").lazyload({
-        event : "onImgLazyLoad"
-    });
+    if(jQuery.isFunction($(".img-lazy").lazyload)) {
+        $(".img-lazy").lazyload({
+            event : "onImgLazyLoad"
+        });
+    }
 });
 /* / Lazy Load Plugin for jQuery */
 
@@ -644,8 +646,14 @@ $(document).ready( function()
 });
 $(window).on("load", function () {
     /* # Lazy Load Plugin for jQuery */
-    /* Новости и статьи на Главной странице */
-    $(".product-list.horizontal.frame .img-lazy").trigger("onImgLazyLoad");
+    if($(".product-list.horizontal.frame").length > 0) {
+        /* Новости и статьи на Главной странице */
+        $(".product-list.horizontal.frame .img-lazy").trigger("onImgLazyLoad");
+    }
+    if($(".block.frame.brands").length > 0) {
+        /* Популярные бренды на Главной странице */
+        $(".block.frame.brands .img-lazy").trigger("onImgLazyLoad");
+    }
     /* / Lazy Load Plugin for jQuery */
 });
 /* обработчик для загрузки голосования и рейтинга в карусели товаров */

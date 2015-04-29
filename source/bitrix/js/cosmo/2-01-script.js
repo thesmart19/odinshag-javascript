@@ -2063,16 +2063,20 @@ $(document).ready(function () {
                 var animationDuration = duration; /* задержка анимации */
                 var wrapWidth = object.find(".items-block").width(); /* вычисляем ширину обертки */
                 /* корректируем blockMult количество блоков в зависимости от ширины обертки */
-                if(wrapWidth >= 540) {
-                    blockMult = 4;
+                if(wrapWidth >= 675) {
+                    blockMult = 5;
                 } else {
-                    if(wrapWidth >= 405) {
-                        blockMult = 3;
+                    if(wrapWidth >= 540) {
+                        blockMult = 4;
                     } else {
-                        if(wrapWidth >= 270) {
-                            blockMult = 2;
+                        if(wrapWidth >= 405) {
+                            blockMult = 3;
                         } else {
-                            blockMult = 1;
+                            if(wrapWidth >= 270) {
+                                blockMult = 2;
+                            } else {
+                                blockMult = 1;
+                            }
                         }
                     }
                 }
@@ -2198,16 +2202,20 @@ $(document).ready(function () {
                         clearTimeout(initTimer);
                         initTimer = setTimeout(function () {
                             wrapWidth = object.find(".items-block").width();
-                            if(wrapWidth >= 540) {
-                                blockMult = 4;
+                            if(wrapWidth >= 675) {
+                                blockMult = 5;
                             } else {
-                                if(wrapWidth >= 405) {
-                                    blockMult = 3;
+                                if(wrapWidth >= 540) {
+                                    blockMult = 4;
                                 } else {
-                                    if(wrapWidth >= 270) {
-                                        blockMult = 2;
+                                    if(wrapWidth >= 405) {
+                                        blockMult = 3;
                                     } else {
-                                        blockMult = 1;
+                                        if(wrapWidth >= 270) {
+                                            blockMult = 2;
+                                        } else {
+                                            blockMult = 1;
+                                        }
                                     }
                                 }
                             }
@@ -2250,6 +2258,13 @@ $(document).ready(function () {
                 item.find(".button").on("mouseout", function () {
                     $(this).removeClass("hover");
                 });
+                /* Lazy Load Plugin for jQuery */
+                /*
+                if(object.find(".img-lazy").length > 0) {
+                    console.log(object.find(".img-lazy").length);
+                    object.find(".img-lazy").trigger("onImgLazyLoad");
+                }
+                */
                 /* / обработчики событий */
             }
         }
@@ -4675,6 +4690,14 @@ $(document).ready(function () {
                             $(this).find("#payment-cashless option").each(function () {
                                 $(this).prop("disabled", false);
                             });
+                            data = {
+                                offlineCardPaymentNotAvailable: false,
+                                onlinePaymentNotAvailable: false,
+                                paymentCashlessTypeMissing: false,
+                                bankPaymentForPersonOnly: false
+                            };
+                            /* onError */
+                            object.trigger(object.customEvents[500], [data]);
                             break;
                             /* /измененение способа доставки */
                             /* #измененение способа оплаты */
@@ -5881,8 +5904,10 @@ $(document).ready(function () {
                     this.objectForm.trigger(this.objectForm.customEvents[10], [errors]);
                     errors = errors.data;
                     if ( typeof disablePaymentMethod !== "undefined" && disablePaymentMethod === true ) {
-                        /* показываем инфо-сообщение */
-                        this.objectForm.find("#DELIVERY_TYPE .page.two .select .info-message").show();
+                        if (errors.onlinePaymentNotAvailable === true || errors.offlineCardPaymentNotAvailable === true || errors.bankPaymentForPersonOnly === true) {
+                            /* показываем инфо-сообщение */
+                            this.objectForm.find("#DELIVERY_TYPE .page.two .select .info-message").show();
+                        }
                         
                         if (errors.onlinePaymentNotAvailable === true) {
                             /* делаем неактивным способ оплаты Оплата картой онлайн */
@@ -5915,7 +5940,10 @@ $(document).ready(function () {
                         var error = this.objectForm.find("#DELIVERY_TYPE .page.two .select .error");
                         if (errors.deliveryIDMissing === true) {
                             error.text("Выберите пункт выдачи товара");
-                        } else {
+                            error.show();
+                        }
+                        /*
+                        else {
                             
                             this.objectForm.find("#DELIVERY_TYPE .page.two .select select option:selected").removeAttr("selected");
                             this.objectForm.find("#DELIVERY_TYPE .page.two ul.pickup-details li").removeClass("active");
@@ -5938,7 +5966,7 @@ $(document).ready(function () {
                             // onError
                             object.trigger(object.customEvents[500], [data]);
                         }
-                        error.show();
+                        */
                     }
                 };
                 /* перекрытие формы белым слоем */
@@ -6572,16 +6600,11 @@ $(document).ready(function () {
                             model.orderFormErrors.onlinePaymentNotAvailable = data.onlinePaymentNotAvailable;
                             model.orderFormErrors.offlineCardPaymentNotAvailable = data.offlineCardPaymentNotAvailable;
                             model.orderFormErrors.bankPaymentForPersonOnly = data.bankPaymentForPersonOnly;
-                            
+                            console.log(model.orderFormData.paymentType);
                             if (model.orderFormData.deliveryType == "pickup") {
-                                if (model.orderFormData.paymentType == "electromoney" || model.orderFormData.paymentType == "cardoffline" || model.orderFormData.paymentType == "cashless") {
+                                if (model.orderFormData.paymentType != 0) {
                                     view.showPickupError(true);
                                 }
-                                /*
-                                else {
-                                    view.showPickupError(true);
-                                }
-                                */
                             }
                         }
                         
