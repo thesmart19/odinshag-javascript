@@ -62,16 +62,14 @@ function hasSVGSupport()
 	return false;
 }
 
-/* # Lazy Load Plugin for jQuery */
 $(function() {
-    if(jQuery.isFunction($(".img-lazy").lazyload)) {
-        $(".img-lazy").lazyload({
-            event : "onImgLazyLoad"
-        });
+    /* # Lazy Load Plugin for jQuery */
+    systemParameters.lazyImages = $(".img-lazy");
+    if(jQuery.isFunction(systemParameters.lazyImages.lazyload)) {
+        systemParameters.lazyImages.lazyload();
     }
+    /* / Lazy Load Plugin for jQuery */
 });
-/* / Lazy Load Plugin for jQuery */
-
 
 $(document).ready( function()
 {   
@@ -646,14 +644,16 @@ $(document).ready( function()
 });
 $(window).on("load", function () {
     /* # Lazy Load Plugin for jQuery */
-    if($(".product-list.horizontal.frame").length > 0) {
-        /* Новости и статьи на Главной странице */
-        $(".product-list.horizontal.frame .img-lazy").trigger("onImgLazyLoad");
+    systemParameters.lazyImages = $(".img-lazy");
+    if(jQuery.isFunction(systemParameters.lazyImages.lazyload)) {
+        systemParameters.lazyImages.lazyload({
+            event : "onImgLazyLoad" /*,
+            load: function() {
+                console.log("onImgLazyLoad callback");
+            } */
+        });
     }
-    if($(".block.frame.brands").length > 0) {
-        /* Популярные бренды на Главной странице */
-        $(".block.frame.brands .img-lazy").trigger("onImgLazyLoad");
-    }
+    systemParameters.lazyImages.trigger("onImgLazyLoad");
     /* / Lazy Load Plugin for jQuery */
 });
 /* обработчик для загрузки голосования и рейтинга в карусели товаров */

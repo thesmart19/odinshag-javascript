@@ -15,7 +15,9 @@ var systemParameters = {
         current: 0,
         normal: 0,
         wide: 0
-    }
+    },
+    /* selector variable for Lazy Load Plugin */
+    lazyImages: 0
 };
 /*
 Если в браузере не определен метод массива indexOf - определяем его
@@ -2258,13 +2260,6 @@ $(document).ready(function () {
                 item.find(".button").on("mouseout", function () {
                     $(this).removeClass("hover");
                 });
-                /* Lazy Load Plugin for jQuery */
-                /*
-                if(object.find(".img-lazy").length > 0) {
-                    console.log(object.find(".img-lazy").length);
-                    object.find(".img-lazy").trigger("onImgLazyLoad");
-                }
-                */
                 /* / обработчики событий */
             }
         }
