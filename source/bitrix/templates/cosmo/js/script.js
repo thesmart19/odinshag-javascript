@@ -498,6 +498,25 @@ $(document).ready( function()
 	
 	/* Главное меню сайта - пункты со стрелками */
 	$(".header .column.right .menu").mainMenuManagement();
+    /* временное уведомление для Спб */
+    var unona = $(".header .column.right .menu .item.new.receipt-and-payment .question");
+    if (unona.length > 0) {
+        unona.on( "click", ".button", function (event) {
+            var button = $(this);
+            $.cookie("unona", 1, { path: "/" } );
+            var time = window.setTimeout( function () {
+                if (button.hasClass("yes")) {
+                    var url = button.attr("href");
+                    if ( url != "") {
+                        document.location.href = url;
+                    }
+                } else {
+                    if (button.hasClass("no")) { unona.hide(); }
+                }
+            }, 250);
+            event.preventDefault();
+        });
+    }
 	/* / Главное меню сайта - пункты со стрелками */
     
     /* Баннеры на Главной странице */
