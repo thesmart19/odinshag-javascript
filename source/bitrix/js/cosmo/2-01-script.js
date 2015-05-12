@@ -2670,7 +2670,7 @@ $(document).ready(function () {
                     }
                 }
                 /* переход по ссылке с нового пункта меню Распродажа */
-                if (obj.parent().hasClass("wholesale"))
+                if (obj.hasClass("no-icon"))
                     return true;
                 event.preventDefault();
             });
