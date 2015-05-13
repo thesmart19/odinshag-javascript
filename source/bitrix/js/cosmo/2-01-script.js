@@ -1667,6 +1667,10 @@ $(document).ready(function () {
     (function ($) {
         $.fn.productListManagement = function () {
             var object = $(this);
+            var pagerTop = 0;
+            if (typeof object[0] !== "undefined") {
+                pagerTop = $(object[0]);
+            }
             var pages = object.find(".pages");
             var dropDownList = object.find(".drop-down-list");
             var dropDownListHeight = 0;
@@ -1755,6 +1759,17 @@ $(document).ready(function () {
                 var sid = parseInt($(this).find("option:selected").val());
                 if (!isNaN(sid) && sid > 0) window.location.search = "?sid=" + sid;
             });
+            if( pagerTop.length > 0 ) {
+                /* костыль */
+                /* при изменении размеров окна пейджер должен быть уже, чем wrapper */
+                /* для планшета и телефона это не должно работать */
+                if ( systemParameters.mobileDevice.isPC === true ) {
+                    $(window).resize( function()
+                    {
+                        pagerTop.width( $("#main_wrapper").width() - 2 );
+                    });
+                }
+            }
         }
     })(jQuery);
     /* / события и обработчики для всего списка товаров */

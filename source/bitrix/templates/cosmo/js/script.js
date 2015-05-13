@@ -470,17 +470,39 @@ $(document).ready( function()
 	/* / Описание категории на странице списка товаров */
 	
 	/* Скролл-бар в левой колонке на странице списка товаров */
+    var categories = $(".box .content .column.left .block .categories.subcats");
+    var categoriesList = categories.find("ul li");
+    var categoriesListCount = categoriesList.length;
+    var categoriesListCountMax = 7;
+    if ( categoriesListCount <= categoriesListCountMax ) {
+        /* если категорий меньше 7 штук - кнопка не нужна */
+        categories.addClass("no-button");
+    } else {
+        /* вычисляем высоту 7 категорий */
+        var height = 0;
+        categoriesList.each( function (index) {
+            var obj = $(this);
+            if ( index < categoriesListCountMax ) {
+                height += (obj.height() + 1);
+            }
+        } );
+        categories.children("ul").height(height);
+        categories.showCategoryDescription(1000);
+    }
 	/* Сокращаем высоту блока со списком подкатегорий */
+    /*
 	var categoriesListHeight = $(".box .content .column.left .block .categories.subcats ul").height();
 	var categoriesItemsHeight = 0;
 	$(".box .content .column.left .block .categories.subcats ul li").each( function()
 	{
 		var object = $(this);
-		categoriesItemsHeight += parseInt(object.height()) + 1; /* + 27 */
+		categoriesItemsHeight += parseInt(object.height()) + 1;
 	});
+    */
     /* небольшой костыль высоты */
-    categoriesItemsHeight -= 1;
+    /* categoriesItemsHeight -= 1; */
 	/* если высота списка подкатегорий меньше высоты блока - сокращаем */
+    /*
 	if( categoriesItemsHeight < categoriesListHeight)
 	{
 		$(".box .content .column.left .block .categories.subcats").height(categoriesItemsHeight);
@@ -494,6 +516,7 @@ $(document).ready( function()
 			$(this).mousewheel(function(event) { event.preventDefault(); });
 		}
 	});
+    */
 	/* / Скролл-бар в левой колонке на странице списка товаров */
 	
 	/* Главное меню сайта - пункты со стрелками */
