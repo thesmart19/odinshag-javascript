@@ -17,7 +17,7 @@ $(document).ready(function () {
 					if (typeof response === "object" && typeof response.error !== "undefined" && typeof response.message !== "undefined") {
 						if (!response.error) {
 							subscription.html("<span><b>" + response.message + "</b></span>");
-
+                            /* Яндекс.Метрика */
 							if (typeof yaCounter10648792 !== "undefined") { yaCounter10648792.reachGoal('SUBSCRIBE_AFTER_ORDER'); }
 						} else {
 							object.find(".loading").removeClass("button");
@@ -41,7 +41,11 @@ $(document).ready(function () {
                 if(typeof data === "object" && data.success == true) {
                     if(typeof systemMessages.info.serviceOrderDone !== "undefined") {
                         object.parent().html(systemMessages.info.serviceOrderDone);
-                    } else { object.parent().html("Ваша заявка принята и скоро будет обработана нашим оператором."); }
+                    } else {
+                        object.parent().html("Ваша заявка принята и скоро будет обработана нашим оператором.");
+                    }
+                    /* Яндекс.Метрика */
+                    if (typeof yaCounter10648792 !== "undefined") { yaCounter10648792.reachGoal('ITEM_APPLICATION_SERVICE'); }
                 } else {
                     object.parent().html("<span class='red'>Ошибка</span>");
                 }

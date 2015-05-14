@@ -2529,7 +2529,7 @@ $(document).ready(function () {
     (function ($) {
         $.fn.showCategoryDescription = function (duration) {
             var object = $(this);
-            var content = object.find(".content"); /* весь контент */
+            var content = object.children(".content"); /* весь контент */
             var contentHeight = content.height();
             var contentPreview = content.children(".preview-text");
             var contentDetail = content.children(".detail-text");
@@ -2543,20 +2543,20 @@ $(document).ready(function () {
                     showMore.click(function (event) {
                         /* показываем весь контент */
                         if (!content.hasClass("open")) {
-                            content.addClass("open");
                             content.animate({
                                 height: content.prop("scrollHeight")
                             }, duration, function () {
                                 showMore.html("Свернуть<span class='icon close'>&nbsp;</span>");
                                 showMore.prop("title", "Свернуть");
+                                content.addClass("open");
                             });
                         } else /* скрываем до короткого описания */ {
+                            content.removeClass("open");
                             content.animate({
                                 height: contentHeight
                             }, duration, function () {
                                 showMore.html(showMoreHtml);
                                 showMore.prop("title", showMoreTitle);
-                                content.removeClass("open");
                             });
                         }
                         event.preventDefault();
@@ -3796,19 +3796,22 @@ $(document).ready(function () {
                 if (dropDownClosed.length > 0 && !isNewsLetter && systemParameters.mobileDevice.isCellPhone) {
                     object.find(".drop-down:not(.tags,.open)").remove();
                     /* создаем новый блок */
-                    var newBlock = "<div class='drop-down aggregate'><div class='title'><a href='#' title='Цена'><span>Остальные фильтры<span class='icon'>&nbsp;</span></span></a></div><div class='content' style='overflow:visible;'>";
+                    var newBlock = "<div class='drop-down aggregate'>";
+                    newBlock += "<div class='content'>";
                     dropDownClosed.each(function () {
                         newBlock += "<div class='drop-down'>";
                         newBlock += $(this).html(); /* добавляем несколько фильтров */
                         newBlock += "</div>";
                     });
-                    newBlock += "</div></div>";
+                    newBlock += "</div>";
+                    newBlock += "<a class='show-more button grey' href='#' title=''>Остальные фильтры<span class='icon'>&nbsp;</span></a>";
+                    newBlock += "</div>";
                     object.append(newBlock);
                     /* инициализация */
                     object.find(".drop-down:not(.tags,.open) .drop-down").each(function (index) {
                         $(this).dropDown(500); /* открытие вложенных блоков */
                     });
-                    object.children(".drop-down:not(.tags,.open)").dropDown(500); /* открытие родительского блока "Остальные фильтры" */
+                    object.children(".drop-down:not(.tags,.open)").showCategoryDescription(500); /* открытие родительского блока "Остальные фильтры" */
                     object.find("label input[type='checkbox']").on("change", function () /* изменение чекбокса */ {
                         var input = $(this);
                         var form = object;
