@@ -2543,6 +2543,7 @@ $(document).ready(function () {
                     showMore.click(function (event) {
                         /* показываем весь контент */
                         if (!content.hasClass("open")) {
+                            content.css( { "display" : "block" } );
                             content.animate({
                                 height: content.prop("scrollHeight")
                             }, duration, function () {
@@ -2557,6 +2558,7 @@ $(document).ready(function () {
                             }, duration, function () {
                                 showMore.html(showMoreHtml);
                                 showMore.prop("title", showMoreTitle);
+                                content.css( { "display" : "-webkit-box" } );
                             });
                         }
                         event.preventDefault();
@@ -6613,7 +6615,7 @@ $(document).ready(function () {
                             model.orderFormErrors.onlinePaymentNotAvailable = data.onlinePaymentNotAvailable;
                             model.orderFormErrors.offlineCardPaymentNotAvailable = data.offlineCardPaymentNotAvailable;
                             model.orderFormErrors.bankPaymentForPersonOnly = data.bankPaymentForPersonOnly;
-                            console.log(model.orderFormData.paymentType);
+                            /* console.log(model.orderFormData.paymentType); */
                             if (model.orderFormData.deliveryType == "pickup") {
                                 if (model.orderFormData.paymentType != 0) {
                                     view.showPickupError(true);
