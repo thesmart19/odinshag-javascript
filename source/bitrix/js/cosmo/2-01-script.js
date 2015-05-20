@@ -695,12 +695,15 @@ function AddToFavorites(obj, subdivisionID, productID) {
             /* показываем сообщение */
             favorites.find(".message").html("<span class='arrow'>&nbsp;</span>" + systemMessages.info.productAdded2Favorites);
             favorites.find(".message").show();
+            favorites.find(".message").addClass("animate-header-message-fast");
             /* статистика и партнерки */
             if (typeof yaCounter10648792 !== "undefined") yaCounter10648792.reachGoal('ADD_2_FAVORITES');
             clearTimeout(hideBasketTimer);
             hideBasketTimer = setTimeout(function () {
                 favorites.find(".message").hide();
+                favorites.find(".message").removeClass("animate-header-message-fast");
                 $(".header.fixed .wrap .compare .message").hide();
+                $(".header.fixed .wrap .compare .message").removeClass("animate-header-message-fast");
             }, hideBasketTimerValue);
         } else {
             /* если лимит превышен - кнопка не активна */
@@ -840,12 +843,15 @@ function AddToCompared(obj, subdivisionID, productID) {
             /* показываем сообщение */
             compared.find(".message").html("<span class='arrow'>&nbsp;</span>" + systemMessages.info.productAdded2Compare);
             compared.find(".message").show();
+            compared.find(".message").addClass("animate-header-message-fast");
             /* статистика и партнерки */
             if (typeof yaCounter10648792 !== "undefined") yaCounter10648792.reachGoal('ADD_2_COMPARE');
             clearTimeout(hideBasketTimer);
             hideBasketTimer = setTimeout(function () {
                 compared.find(".message").hide();
+                compared.find(".message").removeClass("animate-header-message-fast");
                 $(".header.fixed .wrap .favorites .message").hide();
+                $(".header.fixed .wrap .favorites .message").removeClass("animate-header-message-fast");
             }, hideBasketTimerValue);
         } else {
             /* если лимит превышен - кнопка не активна */
