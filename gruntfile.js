@@ -26,6 +26,8 @@ module.exports = function (grunt) {
                     'build/bitrix/templates/cosmo/js/script.js': ['source/bitrix/templates/cosmo/js/script.js'],
                     /* Условия доставки */
                     'build/services/delivery/js/script.js': ['source/services/delivery/js/script.js'],
+                    /* Об интернет-магазине ОдинШаг.ру */
+                    'build/company/about/js/script.js': ['source/company/about/js/script.js'],
                     /* Вакансии */
                     'build/company/vacancy/js/cv-form.js': ['source/company/vacancy/js/cv-form.js'],
                     'build/company/vacancy/js/script.js': ['source/company/vacancy/js/script.js'],
@@ -67,6 +69,8 @@ module.exports = function (grunt) {
                     'build/bitrix/templates/cosmo/js/script.min.js': ['build/bitrix/templates/cosmo/js/script.js'],
                     /* Условия доставки */
                     'build/services/delivery/js/script.js': ['build/services/delivery/js/script.js'],
+                    /* Об интернет-магазине ОдинШаг.ру */
+                    'build/company/about/js/script.js': ['build/company/about/js/script.js'],
                     /* Вакансии */
                     'build/company/vacancy/js/cv-form.js': ['build/company/vacancy/js/cv-form.js'],
                     'build/company/vacancy/js/script.js': ['build/company/vacancy/js/script.js'],
