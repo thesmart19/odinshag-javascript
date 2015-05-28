@@ -8,7 +8,7 @@
 http://jquery.com/download/
 
 ### 1.2 jQuery UI
-версия - 1.10.4 - <обновление>
+версия - 1.11.4
 http://jqueryui.com/download/
 
 ### 1.3 jQuery UI date picker RU

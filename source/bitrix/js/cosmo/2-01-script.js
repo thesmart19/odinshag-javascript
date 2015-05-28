@@ -4357,6 +4357,8 @@ $(document).ready(function () {
                     offlineCardPaymentNotAvailable: false,
                     /* оплата банковским переводом только для физ лица */
                     bankPaymentForPersonOnly: false,
+                    /* оплата бонусами не возможна */
+                    bonusPaymentNotAvailable: false,
                     /* не выбран тип плательщика */
                     personFIDMissing: false,
                     /* не выбран тип безналичной оплаты */
@@ -4383,6 +4385,7 @@ $(document).ready(function () {
                 this.showOnlinePaymentError;
                 this.showPaymentCashlessError;
                 this.showPaymentCashlessTypeError;
+                this.showBonusError;
                 this.showCover;
                 this.onChangeCheckBox;
                 this.sendRitorno;
@@ -4922,6 +4925,7 @@ $(document).ready(function () {
                     case "delivery-pickup":
                         var id = target.find("option:selected").val();
                         var pickpointDetails = target.parent().parent().parent().find("ul.pickup-details li");
+                        var bonusInput = $("input[name='BONUS_TO_PAY']");
                         pickpointDetails.removeClass("active");
                         var data = {};
                         if (id != 0) {
@@ -4943,6 +4947,11 @@ $(document).ready(function () {
                             object.find("#payment-cashless option").each(function () {
                                 $(this).prop("disabled", false);
                             });
+                            /* оплата бонусами разрешена */
+                            if(bonusInput.length != 0) {
+                                bonusInput.prop("disabled", false);
+                                bonusInput.attr("title", "");
+                            }
                             /* Оплата картой при получении - проверка возможности */
                             /* проверка только для городов: Москва, Санкт-Петербург */
                             if (target.find("option:selected").data("has-terminal") == 0) {
@@ -4962,13 +4971,20 @@ $(document).ready(function () {
                             } else {
                                 data.bankPaymentForPersonOnly = false;
                             }
+                            /* оплата бонусами */
+                            if (target.find("option:selected").data("bonus-paid-orders") == 0 && object.find("input[name='BONUS_TO_PAY']").length != 0) {
+                                data.bonusPaymentNotAvailable = true;
+                            } else {
+                                data.bonusPaymentNotAvailable = false;
+                            }
                         } else {
                             data = {
                                 deliveryIDMissing: true,
                                 offlineCardPaymentNotAvailable: false,
                                 onlinePaymentNotAvailable: false,
                                 paymentCashlessTypeMissing: false,
-                                bankPaymentForPersonOnly: false
+                                bankPaymentForPersonOnly: false,
+                                bonusPaymentNotAvailable: false
                             };
                         }
                         /* onError */
@@ -5927,7 +5943,7 @@ $(document).ready(function () {
                     if ( typeof disablePaymentMethod !== "undefined" && disablePaymentMethod === true ) {
                         if (errors.onlinePaymentNotAvailable === true || errors.offlineCardPaymentNotAvailable === true || errors.bankPaymentForPersonOnly === true) {
                             /* показываем инфо-сообщение */
-                            this.objectForm.find("#DELIVERY_TYPE .page.two .select .info-message").show();
+                            this.objectForm.find("#DELIVERY_TYPE .page.two .select .info-message:not(.bonus-message)").show();
                         }
                         
                         if (errors.onlinePaymentNotAvailable === true) {
@@ -6145,6 +6161,24 @@ $(document).ready(function () {
                         window.location.reload(true);
                     }
                 };
+                this.showBonusError = function () {
+                    var errors = {};
+                    /* onGetOrderFormErrors */
+                    this.objectForm.trigger(this.objectForm.customEvents[10], [errors]);
+                    errors = errors.data;
+                    
+                    if (errors.bonusPaymentNotAvailable === true) {
+                        /* блокируем и обнуляем поле для ввода бонусов */
+                        var bonusInput = this.objectForm.find("input[name='BONUS_TO_PAY']");
+                        bonusInput.val(0);
+                        bonusInput.prop("disabled", true);
+                        bonusInput.attr("title", "Оплата бонусами невозможна");
+                        var data = { bonusCountToPay: 0 };
+                        this.objectForm.trigger(object.customEvents[3], [data]);
+                        /* сообщение */
+                        this.objectForm.find("#DELIVERY_TYPE .page.two .select .info-message.bonus-message").show();
+                    }
+                }
                 /* функции */
                 function CheckText(obj, errorMessage, objName) /* проверка на пустоту значения */ {
                     if (obj.val() == "" || obj.val() == errorMessage || obj.val() == "+7 (___) ___-__-__") {
@@ -6643,6 +6677,11 @@ $(document).ready(function () {
                                 model.orderFormData.paymentCashlessType = 0;
                                 model.orderFormErrors.paymentCashlessTypeMissing = false;
                             }
+                        }
+                        
+                        if (typeof data.bonusPaymentNotAvailable  !== "undefined") {
+                            model.orderFormErrors.bonusPaymentNotAvailable = data.bonusPaymentNotAvailable;
+                            view.showBonusError();
                         }
                     }
                 });

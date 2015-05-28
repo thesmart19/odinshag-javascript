@@ -8,7 +8,7 @@ module.exports = function (grunt) {
                     /* jQuery core + plugins + User scripts */
                     'build/bitrix/js/cosmo/production.js': [
                         'source/bitrix/js/cosmo/1-01-jquery.js',
-                        'source/bitrix/js/cosmo/1-02-jquery-ui-1.10.4.custom.min.js',
+                        'source/bitrix/js/cosmo/1-02-jquery-ui-1.11.4.min.js',
                         'source/bitrix/js/cosmo/1-03-jquery-ui.datepicker-ru.js',
                         'source/bitrix/js/cosmo/1-04-jquery.cookie.js',
                         'source/bitrix/js/cosmo/1-05-jquery.custom-scrollbar.min.js',
@@ -96,6 +96,11 @@ module.exports = function (grunt) {
                     {
                         src: 'source/jquery/jquery-1.11.2.js',
                         dest: 'source/bitrix/js/cosmo/1-01-jquery.js'
+                    },
+                    /* update jQuery UI */
+                    {
+                        src: 'source/plugins/jquery-ui/jquery-ui.min.js',
+                        dest: 'source/bitrix/js/cosmo/1-02-jquery-ui-1.11.4.min.js'
                     },
                     /* update jQuery JSON plugin */
                     {
