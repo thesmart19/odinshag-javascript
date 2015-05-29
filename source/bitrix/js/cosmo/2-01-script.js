@@ -1302,8 +1302,10 @@ $(document).ready(function () {
             var prevArrow = object.find(".prev-arrow");
             var nextArrow = object.find(".next-arrow");
             var activeImageIndex = 0;
+            /*
             var maxImageWidth = 500;
             var maxImageHeight = 380;
+            */
             var zoomImageHeight = mainImage.find("li a").height();
             var container = object.find(".container");
             var isSliding = false; /* перемещается ли в данный момент слайд */
@@ -1325,15 +1327,23 @@ $(document).ready(function () {
                     if (document.location.href.indexOf("pickpoints") == -1) {
                         /* инициализация плагина увеличения картинок */
                         /* только если плагин подключен */
+                        /* проверяем размер области для просмотра фото и исходный размер фото */
+                        var imageHeight = parseInt(li.find("a.zoom img").attr("height"));
+                        if(isNaN(imageHeight)) { imageHeight = 0; }
                         var sourceImg = li.find("img:not(.zoomImg)");
-                        if (sourceImg.attr("src") == "/images/cosmo/no_photo.png") {
-                            /* если фотографии товара нет - ссылка не кликабельна */
+                        if (sourceImg.attr("src") == "/images/cosmo/no_photo.png" || imageHeight < zoomImageHeight) {
+                            /* если фотографии товара нет или фото малого размера - ссылка не кликабельна */
                             li.find("a.zoom").css({
                                 "cursor": "default"
                             });
-                            li.find("a.zoom .lens, a.zoom .full-size").css({
+                            li.find("a.zoom .lens").css({
                                 "display": "none"
                             });
+                            if (sourceImg.attr("src") == "/images/cosmo/no_photo.png") {
+                                li.find("a.zoom .full-size").css({
+                                    "display": "none"
+                                });
+                            }
                         } else {
                             /* инициализируем плагин */
                             li.find("a.zoom").zoom({
@@ -1472,6 +1482,7 @@ $(document).ready(function () {
                 /* делаем активными первый слайд и первую миниатюру */
                 $(mainImage.find("li")[1]).addClass("active");
                 $(thumbnails.find("li")[0]).addClass("active");
+                $(thumbnails.find("li")[0]).addClass("animated");
                 activeImageIndex = 0;
                 /* Изменение размеров окна */
                 $(window).resize(function () {
@@ -1497,7 +1508,9 @@ $(document).ready(function () {
                                     $(mainImage.find("li")[activeImageIndex]).addClass("active");
                                     /* делаем активной миниатюру */
                                     thumbnails.find("li").removeClass("active");
+                                    thumbnails.find("li").removeClass("animated");
                                     $(thumbnails.find("li:not(.all)")[activeImageIndex]).addClass("active");
+                                    $(thumbnails.find("li:not(.all)")[activeImageIndex]).addClass("animated");
                                 }
                             });
                         }
@@ -1537,7 +1550,9 @@ $(document).ready(function () {
                     $(mainImage.find("li")[activeImageIndex]).addClass("active");
                     /* делаем активной миниатюру */
                     thumbnails.find("li").removeClass("active");
+                    thumbnails.find("li").removeClass("animated");
                     li.addClass("active");
+                    li.addClass("animated");
                     /* перемещаем главную картинку в заданное положение */
                     MoveTo(activeImageIndex);
                     event.preventDefault();
@@ -1560,6 +1575,8 @@ $(document).ready(function () {
                 object.mouseover(function (event) {
                     /* выключаем таймер смены картинок */
                     clearInterval(timer);
+                    /* выключаем анимацию миниатюр */
+                    thumbnails.find("li").removeClass("animated");
                 });
                 object.mouseleave(function (event) {
                     /* включаем таймер смены картинок */
@@ -1587,7 +1604,9 @@ $(document).ready(function () {
                                 $(mainImage.find("li")[activeImageIndex]).addClass("active");
                                 /* делаем активной миниатюру */
                                 thumbnails.find("li").removeClass("active");
+                                thumbnails.find("li").removeClass("animated");
                                 $(thumbnails.find("li:not(.all)")[activeImageIndex]).addClass("active");
+                                $(thumbnails.find("li:not(.all)")[activeImageIndex]).addClass("animated");
                                 if (mainImageLeft == (mainImageCount + 1) * maxImageWidth * (-1)) mainImage.css({
                                     "left": maxImageWidth * (-1)
                                 });
@@ -1607,7 +1626,9 @@ $(document).ready(function () {
                                 $(mainImage.find("li")[activeImageIndex]).addClass("active");
                                 /* делаем активной миниатюру */
                                 thumbnails.find("li").removeClass("active");
+                                thumbnails.find("li").removeClass("animated");
                                 $(thumbnails.find("li:not(.all)")[activeImageIndex]).addClass("active");
+                                $(thumbnails.find("li:not(.all)")[activeImageIndex]).addClass("animated");
                                 if (mainImageLeft == 0) mainImage.css({
                                     "left": mainImageCount * maxImageWidth * (-1)
                                 });
@@ -1635,7 +1656,9 @@ $(document).ready(function () {
                             $(mainImage.find("li")[activeImageIndex]).addClass("active");
                             /* делаем активной миниатюру */
                             thumbnails.find("li").removeClass("active");
+                            thumbnails.find("li").removeClass("animated");
                             $(thumbnails.find("li:not(.all)")[activeImageIndex]).addClass("active");
+                            $(thumbnails.find("li:not(.all)")[activeImageIndex]).addClass("animated");
                             isSliding = false;
                         });
                     }
@@ -4972,11 +4995,13 @@ $(document).ready(function () {
                                 data.bankPaymentForPersonOnly = false;
                             }
                             /* оплата бонусами */
+                            /*
                             if (target.find("option:selected").data("bonus-paid-orders") == 0 && object.find("input[name='BONUS_TO_PAY']").length != 0) {
                                 data.bonusPaymentNotAvailable = true;
                             } else {
                                 data.bonusPaymentNotAvailable = false;
                             }
+                            */
                         } else {
                             data = {
                                 deliveryIDMissing: true,
@@ -6678,11 +6703,12 @@ $(document).ready(function () {
                                 model.orderFormErrors.paymentCashlessTypeMissing = false;
                             }
                         }
-                        
+                        /*
                         if (typeof data.bonusPaymentNotAvailable  !== "undefined") {
                             model.orderFormErrors.bonusPaymentNotAvailable = data.bonusPaymentNotAvailable;
                             view.showBonusError();
                         }
+                        */
                     }
                 });
                 /* функции */
