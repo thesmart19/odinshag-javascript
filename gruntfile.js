@@ -50,6 +50,11 @@ module.exports = function (grunt) {
                         'source/bitrix/js/cosmo/1-01-jquery.js',
                         'source/bitrix/js/cosmo/1-06-jquery.maskedinput.js',
                         'source/lending-ledostupi/script.js'
+                    ],
+                    /* тестирование */
+                    'build/bitrix/js/cosmo/testing.js': [
+                        'source/bitrix/js/cosmo/3-01-qunit.js',
+                        'source/bitrix/js/cosmo/3-02-testing.js'
                     ]
                 }
             }
