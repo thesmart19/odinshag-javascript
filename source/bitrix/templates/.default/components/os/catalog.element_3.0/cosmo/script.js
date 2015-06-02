@@ -1,17 +1,72 @@
 $(document).ready( function()
 {
-	// инициализация и обработка событий фото слайдера
+	/* инициализация и обработка событий фото слайдера */
 	$(".photo-slider").photoSlider();
 	
-	// счетчик количества товара
+	/* счетчик количества товара */
 	$(".number-items").productCounter();
+    
+    /* показать все отзывы */
+    (function ($) {
+        $.fn.showComments = function (count) {
+            var object = $(this);
+            var reviewWrap = object.children(".reviews");
+            var reviewWrapHeight = reviewWrap.height();
+            var reviews = reviewWrap.children(".review");
+            var reviewsCount = reviews.length;
+            var reviewsHeight = 0;
+            var paddings = 35;
+            var showMore = object.children(".show-more");
+            
+            /* вычисляем высоту count отзывов */
+            reviews.each( function (index) {
+                if(index < count) {
+                    reviewsHeight += $(this).height();
+                }
+            } );
+            reviewsHeight += paddings;
+            
+            if (reviewsCount > count) {
+                /* высота обертки + padding-top + padding-bottom */
+                reviewWrap.height(reviewsHeight);
+                
+                showMore.on("click", function (event) {
+                    var obj = $(this);
+                    
+                    /* показываем все отзывы */
+                    if (!obj.hasClass("close")) {
+                        reviewWrap.animate({ "height" : reviewWrapHeight }, 500, function () {
+                            obj.addClass("close");
+                            obj.html("Свернуть <span class='icon close'>&nbsp;</span>");
+                            obj.attr( { "title" : "Свернуть" } );
+                        });
+                    } else {
+                        /* скрываем, оставляем только count отзывов */
+                        reviewWrap.animate({ "height" : reviewsHeight }, 500, function () {
+                            obj.removeClass("close");
+                            obj.html("Читать все отзывы <span class='icon'>&nbsp;</span>");
+                            obj.attr( { "title" : "Читать все отзывы" } );
+                        });
+                    }
+
+                    event.preventDefault();
+                });
+            } else {
+                /* скрываем кнопку читать все отзывы */
+                showMore.remove();
+            }
+        }
+    })(jQuery);
+    $(".tabs .titles a.two").on("click", function (event) {
+        var timer = setTimeout( function () {
+            $(".tabs .pages .two .show-more .content").showComments(1);
+        }, 250);
+    } );
 	
-	// показать все отзывы или все ответы
-	$(".tabs .pages .two .show-more").showMore(500);
-	$(".tabs .pages .three .show-more").showMore(500);
-	
-	// переключение вкладок товара (О товаре / Отзывы / Вопрос / Ответ)
-	// !!! этот обработчик должен идти после инициализации всех других обработчиков внутри вкладок (например showMore()) !!!
+    /*
+	переключение вкладок товара (О товаре / Отзывы / Вопрос / Ответ)
+	!!! этот обработчик должен идти после инициализации всех других обработчиков внутри вкладок (например showMore()) !!!
+    */
     $(".tabs").each( function()
     {
         var object = $(this);
@@ -21,7 +76,7 @@ $(document).ready( function()
         }
     });
 	
-	// перемещение правого блока страницы товара при прокрутке страницы
+	/* перемещение правого блока страницы товара при прокрутке страницы */
 	$(".card-product-desc").customScroll();
 	
 	/* подсказка для бонусов */
@@ -86,3 +141,4 @@ $(document).ready( function()
     $(".quick-order-block").quickOrderBlockManagement(500);
     /* / Эспериментальная карточка товара */
 });
+
