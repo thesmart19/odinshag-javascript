@@ -21,10 +21,9 @@ $(document).ready( function()
             /* вычисляем высоту count отзывов */
             reviews.each( function (index) {
                 if(index < count) {
-                    reviewsHeight += $(this).height();
+                    reviewsHeight += $(this).height() + paddings;
                 }
             } );
-            reviewsHeight += paddings;
             
             if (reviewsCount > count) {
                 /* высота обертки + padding-top + padding-bottom */
@@ -59,7 +58,7 @@ $(document).ready( function()
     })(jQuery);
     $(".tabs .titles a.two").on("click", function (event) {
         var timer = setTimeout( function () {
-            $(".tabs .pages .two .show-more .content").showComments(1);
+            $(".tabs .pages .two .show-more .content").showComments(3);
         }, 250);
     } );
 	
